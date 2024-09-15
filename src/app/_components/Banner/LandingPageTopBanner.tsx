@@ -4,9 +4,9 @@ import Link from "next/link";
 import ArrowHeadBanner from "~/app/_components/Icon/ArrowHeadBanner";
 
 const LandingPageTopBanner: React.FC<BaseComponentProps> = ({ children, className }) => {
-  const sm: string = "py-3 px-6 flex flex-col"
-  const md: string = "md:py-3 md:px-8 md:flex md:flex-row md:items-center md:justify-center"
-  const lg: string = ""
+  const sm = "py-3 px-6 flex flex-col"
+  const md = "md:py-3 md:px-8 md:flex md:flex-row md:items-center md:justify-center"
+  const lg = ""
   
   return (
     <div className={`bg-at-promo-banner ${sm} ${md} lg:${lg} ${className}`}>
