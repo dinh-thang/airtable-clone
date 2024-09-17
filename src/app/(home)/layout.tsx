@@ -17,7 +17,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`font-sans`}>
-      <body className={`h-screen w-screen`}>
+      <body className={`h-screen`}>
         <TRPCReactProvider>
           <HydrateClient>
             <HeaderBar/>
