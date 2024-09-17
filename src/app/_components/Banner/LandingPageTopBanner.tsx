@@ -9,7 +9,7 @@ const LandingPageTopBanner: React.FC<BaseComponentProps> = ({ children, classNam
   const lg = ""
   
   return (
-    <div className={`bg-at-promo-banner ${sm} ${md} lg:${lg} ${className}`}>
+    <div className={`bg-promo-banner ${sm} ${md} lg:${lg} ${className}`}>
       {children}
 
       <span className={`inline-block leading-at-p mt-2 md:mt-0 md:mx-2`}>

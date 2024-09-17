@@ -4,6 +4,7 @@ import { type Metadata } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { HydrateClient } from "~/trpc/server";
+import HeaderBar from "~/app/_components/Header/HeaderBar";
 
 export const metadata: Metadata = {
   title: "The platform to build next-gen apps - Airtable",
@@ -16,9 +17,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`font-sans`}>
-      <body className={`leading-[1.3]`}>
+      <body className={`h-screen w-screen`}>
         <TRPCReactProvider>
           <HydrateClient>
+            <HeaderBar/>
+
             {children}
           </HydrateClient>
         </TRPCReactProvider>

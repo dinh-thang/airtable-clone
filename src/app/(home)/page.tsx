@@ -1,10 +1,11 @@
-import HeaderBar from "~/app/_components/Header/HeaderBar";
-
+import MainHeroBanner from "~/app/_components/Banner/MainHeroBanner";
+import React from "react";
 
 export default async function Home() {
   return (
-    <main className="">
-      <HeaderBar/>
+    <main className={`w-full h-full`}>
+      <MainHeroBanner/>
+
     </main>
   );
 }
