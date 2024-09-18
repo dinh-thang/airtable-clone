@@ -52,11 +52,11 @@ export default {
         'xl': '1440px'
       },
       backgroundImage: {
-        'main-hero': "url('/Homepage-Hero.jpeg')",
-        'main-hero-bg': "url('/Homepage_Blue_BG.jpeg')",
+        'rainbow-btn': `linear-gradient(91.6deg, #f5620c -3.95%, #fc4777 14.34%, #e848c0 28.2%, #9b67f0 52.43%, #458fff 68.27%, #0ab2fa 86.46%, #0dbdb4 101.9%)`,
+        'homepage-blue': "url('/homepage-blue-bg.webp')",
       },
       boxShadow: {
-        'at-btn-shadow-primary-focused': `
+        'at-btn-primary-focused': `
           rgba(7, 104, 248, 0.5) 0px 0px 0px 2px,
           rgba(0, 0, 0, 0.32) 0px 0px 1px 0px,
           rgba(0, 0, 0, 0.08) 0px 0px 2px 0px,
@@ -64,7 +64,12 @@ export default {
           rgba(0, 0, 0, 0.06) 0px 0px 0px 0.5px inset,
           rgb(255, 255, 255) 0px 0px 0px 1px inset
         `,
-        'at-btn-shadow-primary-hover': `
+        'at-btn-primary-shadow': `
+          rgba(0, 0, 0, 0.32) 0px 0px 1px 0px, 
+          rgba(0, 0, 0, 0.08) 0px 0px 2px 0px, 
+          rgba(45, 127, 249, 0.28) 0px 1px 3px 0px,
+          rgba(0, 0, 0, 0.06) 0px 0px 0px 0.5px inset`,
+        'at-btn-primary-hover': `
           0px 0px 1px #00000052, 
           0px 0px 3px #0000001c, 
           0px 1px 4px #2d7ff97a, 
@@ -81,6 +86,11 @@ export default {
           0px 0px 2px #00000014, 
           0px 1px 3px #00000014, 
           inset 0 0 0 1px #458fff
+        `,
+        'at-rainbow-shadow': `
+          rgba(24, 29, 38, 0.32) 0px 0px 1px 0px, 
+          rgba(24, 29, 38, 0.08) 0px 0px 2px 0px, 
+          rgba(24, 29, 38, 0.08) 0px 1px 3px 0px
         `,
       }
     },

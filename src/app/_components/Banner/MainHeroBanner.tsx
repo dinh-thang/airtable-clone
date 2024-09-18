@@ -1,39 +1,56 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import BreadcrumbArrow from "~/app/_components/Icon/BreadcrumbArrow";
+import RainbowLink from "~/app/_components/Btn/RainbowLink";
+import { pageRoutes } from "~/constants/pageRoutes";
+import PrimaryBtn from "~/app/_components/Btn/PrimaryBtn";
+import SecondaryBtn from "~/app/_components/Btn/SecondaryBtn";
 
 const MainHeroBanner = () => {
   return (
     <div className={`relative h-full w-full overflow-y-hidden`}>
-      <Image
-        src={`/Homepage_Blue_BG.jpeg`}
-        alt={`bg`}
-        layout="fill"
-        objectFit={`cover`}
-        className="absolute left-0 top-0 h-full w-full"
-      />
+      <div className={`absolute w-full h-screen bg-homepage-blue overflow-hidden`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/*<img*/}
+        {/*  src={`/homepage-blue-bg.webp`}*/}
+        {/*  alt={`bg`}*/}
+        {/*  className={`absolute top-0 left-0 w-full h-full object-fill`}*/}
+        {/*/>*/}
+      </div>
 
-      <div className={`relative mx-6 h-auto`}>
-        <div className={`grid grid-rows-[auto,1fr] gap-8 py-8`}>
-          <div className={`flex flex-col`}>
-            <Link href={``} >
-              <p>Build apps instantly with AI</p>
-              <BreadcrumbArrow/>
-            </Link>
+      <div className={`relative mx-12 h-auto py-24`}>
+        <div className={`grid grid-cols-12 gap-6`}>
+          <div className={`col-start-1 col-end-7 md2:col-end-6`}>
+            <div className={`flex flex-col gap-9 h-full items-center justify-center`}>
+              <div className={``}>
+                <span>
+                  <RainbowLink href={pageRoutes.CO_BUILDER} />
+                </span>
+                <h1 className={`text-[64px] leading-[1.15] text-[#1a3866] font-medium`}>The fastest way to build apps</h1>
+                <div className={`mt-2`}>
+                  <p className={`text-lg font-medium text-at-btn-primary-hover`}>Empower the people closest to the work to transform business processes.</p>
+                </div>
+              </div>
 
-            <h1 className={`text-5xl text-at-btn-primary-active font-medium`}>The fastest way to build apps</h1>
-
-            <p>Empower the people closest to the work to transform business processes.</p>
+              {/* btn group*/}
+              <div className={`flex w-full items-start gap-3 md:gap-4 flex-row flex-wrap`}>
+                <PrimaryBtn className={`min-w-[200px] py-[8px] px-3.5`}>
+                  <p className={`font-medium text-lg text-white`}>Sign up for free</p>
+                </PrimaryBtn>
+                <SecondaryBtn className={`min-w-[200px] py-[8px] px-3.5`}>
+                  <p className={`font-medium text-lg`}>Contact Sales</p>
+                </SecondaryBtn>
+              </div>
+            </div>
           </div>
 
-          <div className={`row-start-2`}>
-            {/*<Image*/}
-            {/*  src={`/Homepage-Hero.jpeg`}*/}
-            {/*  alt={`hero`}*/}
-            {/*  layout="fill"*/}
-            {/*  objectFit={`cover`}*/}
-            {/*/>*/}
+          <div className={`relative flex items-center justify-center col-start-7 md2:col-start-6 col-end-13`}>
+            <div className={`min-w-full`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/homepage-hero.webp"
+                alt="hero"
+                className="w-full h-auto object-contain"
+              />
+            </div>
           </div>
         </div>
       </div>
