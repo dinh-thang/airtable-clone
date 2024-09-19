@@ -45,6 +45,21 @@ export default {
           '"Helvetica Neue"',
           'sans-serif',
         ],
+        'auth-sans': [
+          '-apple-system',
+          'system-ui',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Oxygen-Sans',
+          'Ubuntu',
+          'Cantarell',
+          '"Helvetica Neue"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ]
       },
       screens: {
         'md2': '1024px',
@@ -92,7 +107,10 @@ export default {
           rgba(24, 29, 38, 0.08) 0px 0px 2px 0px, 
           rgba(24, 29, 38, 0.08) 0px 1px 3px 0px
         `,
-      }
+        'at-auth-white-btn':
+          '0px 1px 3px 0px rgba(0, 0, 0, 0.08), 0px 0px 2px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.32)'
+        ,
+}
     },
   },
   plugins: [],

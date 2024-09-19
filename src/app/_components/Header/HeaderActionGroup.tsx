@@ -6,6 +6,7 @@ import { pageRoutes } from "~/constants/pageRoutes";
 import GrayBgHoverLink from "~/app/_components/Link/GrayBgHoverLink";
 import SecondaryBtn from "~/app/_components/Btn/SecondaryBtn";
 import BlueHoverLink from "~/app/_components/Link/BlueHoverLink";
+import Link from "next/link";
 
 const HeaderActionGroup: React.FC<BaseComponentProps> = ({ className }) => {
   const sm = ""
@@ -19,8 +20,10 @@ const HeaderActionGroup: React.FC<BaseComponentProps> = ({ className }) => {
       </SecondaryBtn>
 
       <PrimaryBtn className={`ml-4`}>
-        <p className={`md:hidden`}>Sign up</p>
-        <p className={`hidden md:block text-base md2:text-[13px] lg:text-base`}>Sign up for free</p>
+        <Link href={pageRoutes.SIGNUP}>
+          <p className={`md:hidden`}>Sign up</p>
+          <p className={`hidden md:block text-base md2:text-[13px] lg:text-base`}>Sign up for free</p>
+        </Link>
       </PrimaryBtn>
 
       <GrayBgHoverLink href={pageRoutes.LOGIN} className={`hidden md:block md2:hidden ml-4`}>

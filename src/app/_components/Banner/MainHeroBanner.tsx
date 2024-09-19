@@ -19,7 +19,7 @@ const MainHeroBanner = () => {
       <div className={`relative mx-12 h-auto py-24`}>
         <div className={`grid grid-cols-12 gap-6`}>
           <div className={`col-start-1 col-end-7 md2:col-end-6`}>
-            <div className={`flex flex-col gap-9 h-full items-center justify-center`}>
+            <div className={`flex flex-col gap-9 h-full justify-center`}>
               <div className={``}>
                 <span>
                   <RainbowLink href={pageRoutes.CO_BUILDER} />

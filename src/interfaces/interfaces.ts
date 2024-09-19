@@ -16,3 +16,10 @@ export interface LinkProps extends BaseComponentProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
+export interface TextInputFieldProps extends BaseComponentProps {
+  value?: string;
+  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  id: string;
+  label?: string;
+  placeholder?: string;
+}
