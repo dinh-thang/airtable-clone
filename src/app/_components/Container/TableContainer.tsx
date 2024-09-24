@@ -96,7 +96,6 @@ const TableContainer: React.FC<TableContainerProps> = ({ className }) => {
               <HeaderWrapper
                 className={`border-r-[0.8px] font-normal leading-6`}
                 key={header.id}
-                style={{ width: header.getSize() }}
               >
                 <p className={`text-[13px] pl-2 text-start`}>
                   {header.isPlaceholder

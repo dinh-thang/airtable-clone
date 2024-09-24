@@ -21,10 +21,10 @@ const TableMenuBar: React.FC<TableContainerProps> = ({ className }) => {
       </div>
 
       {/* curved end */}
-      <div className={` bg-black/10`}></div>
+      <div className={`bg-black/10`}></div>
 
       {/* right most group */}
-      <div className={` bg-black/10`}></div>
+      <div className={`bg-black/10`}></div>
     </div>
   );
 };
