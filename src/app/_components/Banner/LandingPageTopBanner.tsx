@@ -1,7 +1,7 @@
 import React from "react";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
 import Link from "next/link";
-import ArrowHeadBanner from "~/app/_components/Icon/ArrowHeadBanner";
+import ArrowHeadBanner from "~/app/_components/Icon/Home/ArrowHeadBanner";
 
 const LandingPageTopBanner: React.FC<BaseComponentProps> = ({ children, className }) => {
   const sm = "py-3 px-6 flex flex-col"

@@ -1,10 +1,8 @@
 import React from "react";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
-import AirTableAuthLogo from "~/app/_components/Icon/AirTableAuthLogo";
+import AirTableAuthLogo from "~/app/_components/Icon/Auth/AirTableAuthLogo";
 import TextInputField from "~/app/_components/InputField/TextInputField";
-import Link from "next/link";
 import NonHoverBtn from "~/app/_components/Btn/NonHoverBtn";
-import { pageRoutes } from "~/constants/pageRoutes";
 
 const SignUpForm: React.FC<BaseComponentProps> = ({ className }) => {
   return (

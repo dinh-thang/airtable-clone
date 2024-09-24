@@ -23,3 +23,12 @@ export interface TextInputFieldProps extends BaseComponentProps {
   label?: string;
   placeholder?: string;
 }
+
+export interface BaseListContainerProps extends BaseComponentProps {
+  workspaceId: string;
+}
+
+export interface TableContainerProps extends BaseComponentProps {
+  baseId?: string;
+  tableId?: string;
+}

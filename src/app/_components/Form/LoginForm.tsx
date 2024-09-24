@@ -1,6 +1,6 @@
 import React from "react";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
-import AirTableAuthLogo from "~/app/_components/Icon/AirTableAuthLogo";
+import AirTableAuthLogo from "~/app/_components/Icon/Auth/AirTableAuthLogo";
 import { pageRoutes } from "~/constants/pageRoutes";
 import Link from "next/link";
 import TextInputField from "~/app/_components/InputField/TextInputField";

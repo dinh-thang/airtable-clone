@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "~/app/_components/Wrapper/SessionProvider";
 
 export const metadata: Metadata = {
-  title: "The platform to build next-gen apps - Airtable",
+  title: "Airtable",
   description: "",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
@@ -16,17 +16,17 @@ export const metadata: Metadata = {
 export default async function RootLayout({
  children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // const session = await getServerSession();
+  const session = await getServerSession();
 
   return (
-    <html lang="en" className={`font-sans`}>
-    <body className={`h-screen w-screen`}>
+    <html lang="en">
+    <body>
       <TRPCReactProvider>
-        {/*<SessionProvider session={session}>*/}
+        <SessionProvider session={session}>
           <HydrateClient>
             {children}
           </HydrateClient>
-        {/*</SessionProvider>*/}
+        </SessionProvider>
       </TRPCReactProvider>
     </body>
     </html>

@@ -13,7 +13,9 @@ export default {
         'at-btn-primary-loading': '#1a3866',
         'at-btn-primary-disabled': '#e0e2e6',
         'at-banner-text-gray': '#070c14d1',
-        'at-btn-secondary-hover': '#0d52ac14'
+        'at-btn-secondary-hover': '#0d52ac14',
+        'at-half-black': '#1f1f1f',
+        'at-table-bot-gray': 'hsl(0, 0%, 82%)',
       },
       textColors: {
         'at-primary-disabled': '#41454d',
@@ -59,6 +61,55 @@ export default {
           '"Apple Color Emoji"',
           '"Segoe UI Emoji"',
           '"Segoe UI Symbol"',
+        ],
+        'main-sans': [
+          '-apple-system',
+          'system-ui',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Oxygen-Sans',
+          'Ubuntu',
+          'Cantarell',
+          '"Helvetica Neue"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          'sans-serif',
+        ],
+        'main-content-sans': [
+          '"Inter Display"', // Inter Display font
+          '-apple-system',
+          'system-ui',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Oxygen-Sans',
+          'Ubuntu',
+          'Cantarell',
+          '"Helvetica Neue"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          'sans-serif',
+        ],
+        'base-sans': [
+          'system-ui',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Oxygen-Sans',
+          'Ubuntu',
+          'Cantarell',
+          '"Helvetica Neue"',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          'sans-serif',
+
         ]
       },
       screens: {
@@ -71,6 +122,7 @@ export default {
         'homepage-blue': "url('/homepage-blue-bg.webp')",
       },
       boxShadow: {
+        'at-view-top-bar': 'rgba(200, 200, 200, 1) 0 1px 0 0',
         'at-btn-primary-focused': `
           rgba(7, 104, 248, 0.5) 0px 0px 0px 2px,
           rgba(0, 0, 0, 0.32) 0px 0px 1px 0px,
@@ -110,7 +162,13 @@ export default {
         'at-auth-white-btn':
           '0px 1px 3px 0px rgba(0, 0, 0, 0.08), 0px 0px 2px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.32)'
         ,
-}
+        'at-main-nav': `
+          rgba(0, 0, 0, 0.32) 0px 0px 1px 0px, rgba(0, 0, 0, 0.08) 0px 0px 2px 0px, rgba(0, 0, 0, 0.08) 0px 1px 3px 0px
+        `,
+        'at-main-nav-hover': `
+          0 0 1px 0 rgba(0, 0, 0, 0.48), 0 0 2px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+        `,
+      }
     },
   },
   plugins: [],

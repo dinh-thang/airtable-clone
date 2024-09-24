@@ -1,7 +1,7 @@
 import React from "react";
 import { type LinkProps } from "~/interfaces/interfaces";
 import Link from "next/link";
-import RainbowBtnArrow from "~/app/_components/Icon/RainbowBtnArrow";
+import RainbowBtnArrow from "~/app/_components/Icon/Home/RainbowBtnArrow";
 
 const RainbowLink: React.FC<LinkProps> = ({ className, href }) => {
   return (

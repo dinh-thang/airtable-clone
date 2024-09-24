@@ -1,7 +1,7 @@
 import React from "react";
 import { pageRoutes } from "~/constants/pageRoutes";
 import BlueHoverBtn from "~/app/_components/Btn/BlueHoverBtn";
-import BreadcrumbArrow from "~/app/_components/Icon/BreadcrumbArrow";
+import BreadcrumbArrow from "~/app/_components/Icon/Home/BreadcrumbArrow";
 import BlueHoverLink from "~/app/_components/Link/BlueHoverLink";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
 

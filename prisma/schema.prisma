@@ -43,13 +43,63 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  workspace     Workspace[]
+}
+
+model Workspace {
+  id    String @id @default(cuid())
+  name  String
+  bases Base[]
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Base {
+  id              String  @id @default(cuid())
+  name            String
+  tables          Table[]
+  backgroundColor String
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Table {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  records     Record[]
+  fields      Field[]
+
+  baseId String
+  base   Base   @relation(fields: [baseId], references: [id], onDelete: Cascade)
+}
+
+model Record {
+  id        String   @id @default(cuid())
+  createdAt DateTime
+  fields    Json
+
+  tableId String
+  table   Table  @relation(fields: [tableId], references: [id], onDelete: Cascade)
+}
+
+model Field {
+  id          String  @id @default(cuid())
+  name        String
+  type        String
+  description String?
+
+  tableId String
+  table   Table  @relation(fields: [tableId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

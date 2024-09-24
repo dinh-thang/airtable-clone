@@ -7,6 +7,7 @@ export default async function LoginPage() {
     <main className={`grid font-auth-sans h-screen`}>
       <div className={`flex flex-col items-center justify-center`}>
         <div className={`h-auto`}>
+          {/* TODO: implement email sign in */}
           <LoginForm className={`w-[500px] mb-2 mx-auto h-auto`}/>
 
           {/* separator */}
