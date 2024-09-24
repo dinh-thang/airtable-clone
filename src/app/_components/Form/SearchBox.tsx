@@ -11,7 +11,6 @@ const SearchBox: React.FC<TextInputFieldProps> = ({ className, id, value, placeh
           id={id}
           placeholder={placeholder}
           value={value}
-          onChange={temp}
           className={`ml-2 text-[13px] outline-none placeholder-at-half-black/75`}
           type="text"
         />
