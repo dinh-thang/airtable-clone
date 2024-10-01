@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseTopBar from "~/app/_components/Header/BaseTopBar";
 import TableMenuBar from "~/app/_components/Menu/TableMenuBar";
 import ViewTopBar from "~/app/_components/Menu/ViewTopBar";
@@ -15,6 +15,10 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
 
   // STATES
   const [curTable, setCurTable] = useState<string>("");
+
+  useEffect(() => {
+    console.log(curTable);
+  }, [curTable]);
 
   return (
     <main className={`font-base-sans text-[13px] leading-[1.38]`}>

@@ -20,6 +20,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   // SERVER
   const { data: fetchedTableContent } = api.table.getTableById.useQuery(
     { id: tableId!},
+    { enabled: !!tableId }
   )
 
   // STATES
@@ -166,7 +167,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
       <table>
         <thead>
           <tr>
-            <AddColumnCell tableId={tableId} className={`border-r-[0.8px] font-normal leading-6`} />
+            <AddColumnCell setFields={setFields} tableId={tableId} className={`border-r-[0.8px] font-normal leading-6`} />
           </tr>
         </thead>
       </table>
