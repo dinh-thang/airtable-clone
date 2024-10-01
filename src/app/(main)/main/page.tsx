@@ -30,8 +30,6 @@ const MainPage = () => {
     { userId: userId! },
   );
 
-  console.log(fetchedWSpace);
-
   const { data: fetchedBases } = api.workspace.getWorkspaceById.useQuery(
     { id: currentWSpace },
   )

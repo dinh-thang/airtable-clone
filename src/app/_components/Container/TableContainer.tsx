@@ -1,6 +1,6 @@
 "use client"
 
-import { ColumnDef, getCoreRowModel } from "@tanstack/table-core";
+import { type ColumnDef, getCoreRowModel } from "@tanstack/table-core";
 import React, { useEffect, useMemo, useState } from "react";
 import { flexRender, useReactTable } from "@tanstack/react-table";
 import { api } from "~/trpc/react";
@@ -94,74 +94,83 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   })
 
   return (
-    <table className={`p-0 cursor-pointer ${className}`}>
-      <thead className={`h-8`}>
-       {table.getHeaderGroups().map((headerGroup) => (
-          <tr className={`h-8`} key={headerGroup.id}>
-            <HeaderWrapper className={`leading-6 min-w-16`}>
-              <Checkbox/>
-            </HeaderWrapper>
+    <div className="flex items-start">
+      <table className={`relative p-0 cursor-pointer ${className}`}>
+        <thead className={`relative h-8`}>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr className={`h-8`} key={headerGroup.id}>
+              <HeaderWrapper className={`leading-6 min-w-16`}>
+                <Checkbox />
+              </HeaderWrapper>
 
-            {headerGroup.headers.map((header) => (
-              <HeaderWrapper
-                className={`border-r-[0.8px] font-normal leading-6 min-w-20`}
-                key={header.id}
-                style={{ width: header.getSize() }}
-              >
-                <p className={`text-[13px] pl-2 text-start`}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                  )}
-                </p>
+              {headerGroup.headers.map((header) => (
+                <HeaderWrapper
+                  className={`border-r-[0.8px] font-normal leading-6 min-w-20`}
+                  key={header.id}
+                  style={{ width: header.getSize() }}
+                >
+                  <p className={`text-[13px] pl-2 text-start`}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                  </p>
 
-                {/* TODO: drop down arrow menu here */}
-                <span className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}>
-                  <CellArrowIcon className={`opacity-75`}/>
+                  {/* TODO: drop down arrow menu here */}
+                  <span className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}>
+                  <CellArrowIcon className={`opacity-75`} />
                 </span>
 
-                <div
-                  onMouseDown={header.getResizeHandler()}
-                  onTouchStart={header.getResizeHandler()}
-                  className={`absolute top-0 right-0 bottom-0 w-1 cursor-col-resize z-10 
+                  <div
+                    onMouseDown={header.getResizeHandler()}
+                    onTouchStart={header.getResizeHandler()}
+                    className={`absolute top-0 right-0 bottom-0 w-1 cursor-col-resize z-10 
                     ${header.column.getIsResizing() ? 'bg-blue-500' : 'bg-transparent'} `}
-                ></div>
-              </HeaderWrapper>
-            ))}
-            
-            <AddColumnCell tableId={tableId} className={`border-r-[0.8px] font-normal leading-6 min-w-20`}/>
-          </tr>
-        ))}
-      </thead>
+                  ></div>
+                </HeaderWrapper>
+              ))}
+            </tr>
+          ))}
+        </thead>
 
-      <tbody>
-        {table.getRowModel().rows.map((row, index) => (
-          <tr className={`h-8`} key={row.id}>
-            <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
-              {index + 1}
-            </td>
-
-            {row.getVisibleCells().map((cell) => (
-              <td
-                className={`border-r-[0.8px] bg-white pl-2 border-b-[0.8px]`}
-                key={cell.id}
-                style={{ width: cell.column.getSize() }}
-              >
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        <tbody>
+          {table.getRowModel().rows.map((row, index) => (
+            <tr className={`h-8`} key={row.id}>
+              <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
+                {index + 1}
               </td>
-            ))}
-          </tr>
-        ))}
 
-        <tr className={`relative h-8 w-full hover:bg-[#f8f8f8] bg-white border-b-[0.8px] border-r border-r-at-table-bot-gray`}>
-          <td className={`h-8 w-16 border-r border-r-at-table-bot-gray`}>
-            <AddRowCell customFunction={addEmptyRecord} tableId={tableId} className={`absolute top-2 left-2`}/>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  className={`border-r-[0.8px] bg-white pl-2 border-b-[0.8px]`}
+                  key={cell.id}
+                  style={{ width: cell.column.getSize() }}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+
+          <tr
+            className={`relative h-8 w-full hover:bg-[#f8f8f8] bg-white border-b-[0.8px] border-r border-r-at-table-bot-gray`}>
+            <td className={`h-8 w-16 border-r border-r-at-table-bot-gray`}>
+              <AddRowCell customFunction={addEmptyRecord} tableId={tableId} className={`absolute top-2 left-2`} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <AddColumnCell tableId={tableId} className={`border-r-[0.8px] font-normal leading-6`} />
+          </tr>
+        </thead>
+      </table>
+    </div>
   );
 };
 

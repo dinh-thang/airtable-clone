@@ -2,7 +2,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/
 import { z } from "zod";
 
 export const tableRouter = createTRPCRouter({
-  createTable: protectedProcedure
+  createTable: publicProcedure
     .input(
       z.object({
         name: z.string().min(1),

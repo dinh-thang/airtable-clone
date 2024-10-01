@@ -106,7 +106,7 @@ const AddColumnCell: React.FC<TableHeaderProps> = ({ className, setFields, table
   };
 
   return (
-    <HeaderWrapper onClick={handleHeaderClick} ref={wrapperRef} className={`${className}`}>
+    <HeaderWrapper onClick={handleHeaderClick} ref={wrapperRef} className={`min-w-20 max-w-20 ${className}`}>
       <div onClick={handlePlusClick} className={`flex h-full items-center justify-center`}>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" className="icon">
           <use fill="currentColor" href="/icons/icon_definitions.svg?v=4ff0794f56fc1e06fa1e614b25254a46#Plus"></use></svg>

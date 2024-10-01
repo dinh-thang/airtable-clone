@@ -17,7 +17,6 @@ const BaseNavBar: React.FC<BaseComponentProps> = ({ className }) => {
       link: "/",
     },
   ]
-
   const navs2 = [
     {
       name: "Forms",

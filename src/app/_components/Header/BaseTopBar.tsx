@@ -1,24 +1,30 @@
 "use client"
 
 import React from "react";
+
 import { type BaseComponentProps } from "~/interfaces/interfaces";
+
 import RocketIcon from "~/app/_components/Icon/Base/RocketIcon";
 import BaseFilterBarArrow from "~/app/_components/Icon/Base/BaseFilterBarArrow";
 import BaseNavBar from "~/app/_components/Header/BaseNavBar";
 import QuestionMarkIcon from "~/app/_components/Icon/QuestionMarkIcon";
 import NotificationIcon from "~/app/_components/Icon/NotificationIcon";
-import UserProfileIcon from "~/app/_components/Icon/Main/UserProfileIcon";
-import { useSession } from "next-auth/react";
+import { api } from "~/trpc/react";
 
-const BaseTopBar: React.FC<BaseComponentProps> = ({ className }) => {
-  const { data } = useSession();
+export interface BaseTopBarProps extends BaseComponentProps {
+  userImage: string;
+  baseId: string;
+}
+
+const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, userImage, baseId }) => {
+  const { data: base } = api.base.getBaseById.useQuery({ id: baseId });
 
   return (
     <header className={`flex flex-col h-14 absolute top-0 right-0 left-0 ${className}`}>
       <div className={`flex flex-1`}>
         <div className={`flex flex-row h-full items-center`}>
           <RocketIcon className="mr-4" />
-          <span className={`text-[17px] font-semibold mr-1`}>Base name goes here</span>
+          <span className={`text-[17px] font-semibold mr-1`}>{base?.name ?? "Base name"}</span>
           <BaseFilterBarArrow />
         </div>
 
@@ -39,16 +45,12 @@ const BaseTopBar: React.FC<BaseComponentProps> = ({ className }) => {
 
           {/* profile img */}
           <div className={`h-7 flex items-center ml-2 justify-center`}>
-            {data?.user?.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                className={`cursor-pointer rounded-full border-white border-[0.8px] w-7 h-7`}
-                src={data?.user?.image}
-                alt={``}
-              />
-            ) : (
-              <UserProfileIcon />
-            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={`cursor-pointer rounded-full border-white border-[0.8px] w-7 h-7`}
+              src={userImage}
+              alt={``}
+            />
           </div>
         </div>
       </div>

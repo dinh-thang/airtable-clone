@@ -38,6 +38,13 @@ export interface TableContainerProps extends BaseComponentProps {
   className?: string;
   baseId?: string;
   tableId?: string;
+  curTable?: string;
+  setCurTable?: Dispatch<SetStateAction<string>>;
+}
+
+export interface Table {
+  id: string;
+  name: string;
 }
 
 export interface TableHeaderProps extends BaseComponentProps {
