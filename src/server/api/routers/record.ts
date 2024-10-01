@@ -23,8 +23,12 @@ export const recordRouter = createTRPCRouter({
         throw new Error('Record not found');
       }
 
+      const currentFields = typeof existingRecord.fields === 'object' && existingRecord.fields !== null
+        ? existingRecord.fields
+        : {};
+
       const updatedFields = {
-        ...existingRecord.fields,
+        ...currentFields,
         [fieldKey]: fieldValue,
       };
 
