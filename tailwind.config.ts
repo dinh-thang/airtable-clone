@@ -122,6 +122,8 @@ export default {
         'homepage-blue': "url('/homepage-blue-bg.webp')",
       },
       boxShadow: {
+        'at-add-cell':
+          '0px 0px 1px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.16), 0px 3px 4px rgba(0, 0, 0, 0.06), 0px 6px 8px rgba(0, 0, 0, 0.06), 0px 12px 16px rgba(0, 0, 0, 0.08), 0px 18px 32px rgba(0, 0, 0, 0.06)',
         'at-view-top-bar': 'rgba(200, 200, 200, 1) 0 1px 0 0',
         'at-btn-primary-focused': `
           rgba(7, 104, 248, 0.5) 0px 0px 0px 2px,

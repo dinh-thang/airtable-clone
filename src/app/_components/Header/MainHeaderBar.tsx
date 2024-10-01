@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useState } from "react";
 import MainHamMenu from "~/app/_components/Icon/Main/MainHamMenu";
 import AirTableMainLogo from "~/app/_components/Icon/Main/AirTableMainLogo";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import { type BaseComponentProps } from "~/interfaces/interfaces";
 const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
   const [searchVal, setSearchVal] = React.useState("");
   const { data } = useSession();
+  const [profileSelected, setProfileSelected] = useState<boolean>(false);
 
   return (
     <header className={`flex w-full items-center shadow-at-main-nav h-14 bg-white ${className}`}>
@@ -51,7 +52,7 @@ const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
           </div>
 
           {/* profile img */}
-          <div className={`h-7 flex items-center ml-2 justify-center`}>
+          <div onClick={() => setProfileSelected(!profileSelected)} className={`h-7 relative flex items-center ml-2 justify-center`}>
             {data?.user?.image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img className={`cursor-pointer rounded-full w-7 h-7`} src={data?.user?.image} alt={``}/>
@@ -59,6 +60,12 @@ const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
              <UserProfileIcon/>
             )}
           </div>
+
+          {profileSelected ?? (
+            <div className={`fixed top-full left-0 bg-blue-500`}>
+              opend
+            </div>
+          )}
         </div>
       </nav>
     </header>

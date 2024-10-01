@@ -26,7 +26,7 @@ export const baseRouter = createTRPCRouter({
       return ctx.db.base.findMany({
         where: {
           workspaceId: input.workspaceId,
-        }
+        },
       })
-    })
+    }),
 })

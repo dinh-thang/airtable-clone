@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 
 export const tableRouter = createTRPCRouter({
@@ -28,7 +28,28 @@ export const tableRouter = createTRPCRouter({
       })
     }),
 
-  getTableById: protectedProcedure
+  getAllFieldsByTableId: publicProcedure
+    .input(
+      z.object({
+        tableId: z.string().min(1),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.db.table.findUnique({
+        where: {
+          id: input.tableId,
+        },
+        select: {
+          fields: {
+            orderBy: {
+              createdAt: "asc"
+            }
+          },
+        }
+      })
+    }),
+
+  getTableById: publicProcedure
     .input(
       z.object({
         id: z.string().min(1),
@@ -39,15 +60,15 @@ export const tableRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          fields: true,
+        include: {
           records: {
-            select: {
-              id: true,
-              fields: true
+            orderBy: {
+              createdAt: "asc"
+            }
+          },
+          fields: {
+            orderBy: {
+              createdAt: "asc"
             }
           }
         },

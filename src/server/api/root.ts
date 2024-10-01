@@ -3,6 +3,8 @@ import { baseRouter } from "~/server/api/routers/base";
 import { fieldRouter } from "~/server/api/routers/field";
 import { tableRouter } from "~/server/api/routers/table";
 import { workspaceRouter } from "~/server/api/routers/workspace";
+import { recordRouter } from "~/server/api/routers/record";
+import { userRouter } from "~/server/api/routers/user";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +16,8 @@ export const appRouter = createTRPCRouter({
   field: fieldRouter,
   table: tableRouter,
   workspace: workspaceRouter,
+  record: recordRouter,
+  user: userRouter,
 });
 
 // export type definition of API

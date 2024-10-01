@@ -3,6 +3,10 @@ import { type TextInputFieldProps } from "~/interfaces/interfaces";
 import SearchIcon from "~/app/_components/Icon/Main/SearchIcon";
 
 const SearchBox: React.FC<TextInputFieldProps> = ({ className, id, value, placeholder }) => {
+  const searchHandler = () => {
+    return;
+  }
+
   return (
     <div className={`flex flex-row items-center w-full ${className}`}>
       <div className="flex flex-row items-center w-full h-8 rounded-full hover:shadow-at-main-nav-hover px-4 shadow-at-main-nav">
@@ -10,6 +14,7 @@ const SearchBox: React.FC<TextInputFieldProps> = ({ className, id, value, placeh
         <input
           id={id}
           placeholder={placeholder}
+          onChange={searchHandler}
           value={value}
           className={`ml-2 text-[13px] outline-none placeholder-at-half-black/75`}
           type="text"

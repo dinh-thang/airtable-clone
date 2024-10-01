@@ -1,5 +1,7 @@
+import type { CSSProperties, Dispatch, MouseEventHandler, ReactNode, SetStateAction } from "react";
+
 export interface BaseComponentProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
@@ -7,18 +9,22 @@ export interface SvgProps {
   className?: string;
 }
 
+export interface ClickableProps extends BaseComponentProps {
+  onClick?: () => void;
+}
+
 export interface BtnProps extends BaseComponentProps {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 export interface LinkProps extends BaseComponentProps {
   href: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 export interface TextInputFieldProps extends BaseComponentProps {
   value?: string;
-  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  setValue?: Dispatch<SetStateAction<string>>;
   id: string;
   label?: string;
   placeholder?: string;
@@ -29,6 +35,35 @@ export interface BaseListContainerProps extends BaseComponentProps {
 }
 
 export interface TableContainerProps extends BaseComponentProps {
+  className?: string;
   baseId?: string;
   tableId?: string;
 }
+
+export interface TableHeaderProps extends BaseComponentProps {
+  style?: CSSProperties;
+  onClick?: MouseEventHandler<HTMLTableCellElement>;
+  className?: string;
+  children?: ReactNode;
+  fields?: string[];
+  setFields?: Dispatch<SetStateAction<string[]>>;
+  tableId?: string;
+  customFunction?: () => void;
+}
+
+export interface Field {
+  name: string;
+  type: string;
+  description?: string;
+}
+
+export interface CellProps extends BaseComponentProps {
+  data?: string;
+  setData?: Dispatch<SetStateAction<string>>;
+  rowId: string;
+  columnKey: string;
+  currentData?: Field;
+}
+
+
+

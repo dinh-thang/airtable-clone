@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+
 import MainHeaderBar from "~/app/_components/Header/MainHeaderBar";
 import MainSideMenu from "~/app/_components/Menu/MainSideMenu";
 import MainPageCard from "~/app/_components/Card/MainPageCard";
@@ -6,11 +7,29 @@ import MainStarIcon from "~/app/_components/Icon/Main/MainStarIcon";
 import MainWindowIcon from "~/app/_components/Icon/Main/MainWindowIcon";
 import MainArrowIcon from "~/app/_components/Icon/Main/MainArrowIcon";
 import MainComplexWindowIcon from "~/app/_components/Icon/Main/MainComplexWindowIcon";
-import Link from "next/link";
 import BaseFilterMenu from "~/app/_components/Menu/BaseFilterMenu";
 
-const MainPage = () => {
-  // const workspace = api.workspace.getWorkspaceById();
+import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { api } from "~/trpc/react";
+
+//  TODO: add a type for workspace here and continue
+
+const MainPage = async () => {
+  const session = await getServerSession();
+  const userId = session?.user?.id;
+
+  const [currentWSpace, setCurrentWSpace] = useState();
+  const [bases, setBases] = useState<string[]>([]);
+  const [wSpace, setWSpace] = useState<string[]>([]);
+
+  const { data: fetchedWSpace } = api.user.getAllWorkspacesByUserId.useQuery(
+    { userId: userId! },
+  );
+
+  const { data: fetchedBases } = api.workspace.getWorkspaceById.useQuery(
+    { id: currentWSpace! },
+  )
 
   return (
     <main className="flex h-screen w-screen flex-col">
@@ -111,13 +130,12 @@ const MainPage = () => {
 
             {/* list of bases */}
             {/* TODO: display list of base here */}
-            {/*<BaseListContainer workspaceId={} />*/}
+            <BaseListContainer workspaceId={} />
           </div>
         </div>
       </div>
     </main>
   );
-
 };
 
 export default MainPage;

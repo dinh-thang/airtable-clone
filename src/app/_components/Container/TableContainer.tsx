@@ -1,79 +1,74 @@
 "use client"
 
-import React, { useState } from "react";
-import { type TableContainerProps } from "~/interfaces/interfaces";
-import { api } from "~/trpc/react";
-import { ColumnDef, createColumnHelper, createTable, getCoreRowModel } from "@tanstack/table-core";
+import { getCoreRowModel } from "@tanstack/table-core";
+import React, { useEffect, useMemo, useState } from "react";
 import { flexRender, useReactTable } from "@tanstack/react-table";
+import { api } from "~/trpc/react";
+
+import { type TableContainerProps } from "~/interfaces/interfaces";
+
 import HeaderWrapper from "~/app/_components/Table/HeaderWrapper";
 import Checkbox from "~/app/_components/Form/Checkbox";
 import CellArrowIcon from "~/app/_components/Icon/Base/CellArrowIcon";
-// import { type inferRouterOutputs } from "@trpc/server";
-// import { type AppRouter } from "~/server/api/root";
+import AddColumnCell from "~/app/_components/Table/AddColumnCell";
+import EditableCell from "~/app/_components/Table/EditableCell";
+import AddRowCell from "~/app/_components/Table/AddRowCell";
 
-// type RecordType = inferRouterOutputs<AppRouter>["table"]["getTableById"];
+type RecordFieldsType = Record<string, string | number | boolean | null>;
 
-type Student = {
-  studentId: number;
-  name: string;
-  dateOfBirth: string;
-  major: string;
-};
+const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) => {
+  // SERVER
+  const { data: fetchedTableContent } = api.table.getTableById.useQuery(
+    { id: tableId!},
+  )
 
-const TableContainer: React.FC<TableContainerProps> = ({ className }) => {
-  const defaultData: Student[] = [
-    {
-      studentId: 1111,
-      name: "Bahar Constantia",
-      dateOfBirth: "1984-01-04",
-      major: "Business",
-    },
-    {
-      studentId: 2222,
-      name: "Harold Nona",
-      dateOfBirth: "1961-05-10",
-      major: "Communications",
-    },
-    {
-      studentId: 3333,
-      name: "Raginolf Arnulf",
-      dateOfBirth: "1991-10-12",
-      major: "Business",
-    },
-    {
-      studentId: 4444,
-      name: "Marvyn Wendi",
-      dateOfBirth: "1978-09-24",
-      major: "Business",
-    },
-  ];
-  const [data, setData] = useState<Student[]>([...defaultData]);
-  const [columnSizing, setColumnSizing] = useState({});
+  // STATES
+  const [fields, setFields] = useState<string[]>([]); // List of table columns
+  const [columnSizing, setColumnSizing] = useState({}); // For resizing table columns
+  const [data, setData] = useState<(RecordFieldsType)[]>([]);
 
-  const columnHelper = createColumnHelper<Student>();
+  const columns = useMemo(() =>
+    fields.map(field => ({
+      accessorKey: field,
+      header: field.charAt(0).toUpperCase() + field.slice(1),
+      // @ts-ignore
+      cell: ({ cell, row }) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        return <EditableCell data={cell.getValue()} rowId={row.original.id} columnKey={field}/>
+      },
+      minSize: 50,
+      maxSize: 500,
+    })), [fields]
+  );
 
-  const columns = [
-    columnHelper.accessor("studentId", {
-      header: "Student ID",
-      minSize: 64,
-    }),
-    columnHelper.accessor("name", {
-      header: "Full Name",
-      minSize: 64,
-    }),
-    columnHelper.accessor("dateOfBirth", {
-      header: "Date Of Birth",
-      minSize: 64,
-    }),
-    columnHelper.accessor("major", {
-      header: "Major",
-      minSize: 64,
-    }),
-  ];
+  useEffect(() => {
+    if (!fetchedTableContent) return;
+
+    // update the rows with data
+    const mappedData = fetchedTableContent?.records.map((record) => ({
+      id: record.id,
+      ...record.fields as RecordFieldsType,
+    })) ?? [];
+    setData(mappedData); // Store the fetched data in state
+
+    // update the columns state
+    const extractedFields = fetchedTableContent.fields.map((field) => field.name);
+    setFields(extractedFields);
+
+  }, [fetchedTableContent]);
+
+  const addEmptyRecord = () => {
+    const newRecord = {
+      id: crypto.randomUUID(),
+      ...fields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
+    };
+
+    setData((prevData) => [...prevData, newRecord]);  // Add the new record to the existing data
+  };
 
   const table = useReactTable({
     columns,
-    data,
+    data: data,
     state: {
       columnSizing,
     },
@@ -81,21 +76,23 @@ const TableContainer: React.FC<TableContainerProps> = ({ className }) => {
     enableColumnResizing: true,
     columnResizeMode: "onChange",
     onColumnSizingChange: setColumnSizing,
+    getRowId: (originalRow: RecordFieldsType) => originalRow.id as string,
   })
 
   return (
-    <table className={`p-0 ${className}`}>
+    <table className={`p-0 cursor-pointer ${className}`}>
       <thead className={`h-8`}>
-
        {table.getHeaderGroups().map((headerGroup) => (
           <tr className={`h-8`} key={headerGroup.id}>
-            <HeaderWrapper className={`leading-6 w-[66px]`}>
-              <Checkbox></Checkbox>
+            <HeaderWrapper className={`leading-6 min-w-16`}>
+              <Checkbox/>
             </HeaderWrapper>
+
             {headerGroup.headers.map((header) => (
               <HeaderWrapper
-                className={`border-r-[0.8px] font-normal leading-6`}
+                className={`border-r-[0.8px] font-normal leading-6 min-w-20`}
                 key={header.id}
+                style={{ width: header.getSize() }}
               >
                 <p className={`text-[13px] pl-2 text-start`}>
                   {header.isPlaceholder
@@ -119,20 +116,22 @@ const TableContainer: React.FC<TableContainerProps> = ({ className }) => {
                 ></div>
               </HeaderWrapper>
             ))}
+            
+            <AddColumnCell tableId={tableId} className={`border-r-[0.8px] font-normal leading-6 min-w-20`}/>
           </tr>
         ))}
       </thead>
 
       <tbody>
         {table.getRowModel().rows.map((row, index) => (
-          <tr key={row.id}>
-            <td className="leading-6 w-[66px] border-r border-b-[0.8px] border-r-at-table-bot-gray">
+          <tr className={`h-8`} key={row.id}>
+            <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
               {index + 1}
             </td>
 
             {row.getVisibleCells().map((cell) => (
               <td
-                className={`border-r-[0.8px] border-b-[0.8px]`}
+                className={`border-r-[0.8px] bg-white pl-2 border-b-[0.8px]`}
                 key={cell.id}
                 style={{ width: cell.column.getSize() }}
               >
@@ -141,6 +140,12 @@ const TableContainer: React.FC<TableContainerProps> = ({ className }) => {
             ))}
           </tr>
         ))}
+
+        <tr className={`relative h-8 w-full hover:bg-[#f8f8f8] bg-white border-b-[0.8px] border-r border-r-at-table-bot-gray`}>
+          <td className={`h-8 w-16 border-r border-r-at-table-bot-gray`}>
+            <AddRowCell customFunction={addEmptyRecord} tableId={tableId} className={`absolute top-2 left-2`}/>
+          </td>
+        </tr>
       </tbody>
     </table>
   );

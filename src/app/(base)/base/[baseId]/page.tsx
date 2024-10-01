@@ -16,11 +16,10 @@ const BasePage = () => {
         {/* table toolbar */}
         <ViewTopBar className={`relative z-20`} />
 
-        <div className={`relative z-10 h-full w-full `}>
+        <div className={`relative z-10 h-full w-full`}>
           {/* right pane */}
-          <TableContainer className={`absolute z-10 left-0`} />
+          <TableContainer tableId={`f3e2307a-056f-44b0-b68f-403c9a35da09`} className={`absolute w-full z-20 overflow-auto top-0 left-0`} />
         </div>
-
       </div>
     </main>
   );
