@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 
 import MainHeaderBar from "~/app/_components/Header/MainHeaderBar";
@@ -10,13 +12,13 @@ import MainComplexWindowIcon from "~/app/_components/Icon/Main/MainComplexWindow
 import BaseFilterMenu from "~/app/_components/Menu/BaseFilterMenu";
 
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import { api } from "~/trpc/react";
+import { useSession } from "next-auth/react";
 
 //  TODO: add a type for workspace here and continue
 
-const MainPage = async () => {
-  const session = await getServerSession();
+const MainPage = () => {
+  const { data: session } = useSession();
   const userId = session?.user?.id;
 
   const [currentWSpace, setCurrentWSpace] = useState();
@@ -130,7 +132,7 @@ const MainPage = async () => {
 
             {/* list of bases */}
             {/* TODO: display list of base here */}
-            <BaseListContainer workspaceId={} />
+            {/*<BaseListContainer workspaceId={""} />*/}
           </div>
         </div>
       </div>
