@@ -16,11 +16,6 @@ import AddRowCell from "~/app/_components/Table/AddRowCell";
 
 type RecordFieldsType = Record<string, string | number | boolean | null>;
 
-interface RowData {
-  id: string;
-  [key: string]: any; // Assuming each row can have dynamic fields
-}
-
 const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) => {
   // SERVER
   const { data: fetchedTableContent } = api.table.getTableById.useQuery(
