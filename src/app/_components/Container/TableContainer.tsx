@@ -1,6 +1,6 @@
 "use client"
 
-import { getCoreRowModel } from "@tanstack/table-core";
+import { ColumnDef, getCoreRowModel } from "@tanstack/table-core";
 import React, { useEffect, useMemo, useState } from "react";
 import { flexRender, useReactTable } from "@tanstack/react-table";
 import { api } from "~/trpc/react";
@@ -16,6 +16,11 @@ import AddRowCell from "~/app/_components/Table/AddRowCell";
 
 type RecordFieldsType = Record<string, string | number | boolean | null>;
 
+interface RowData {
+  id: string;
+  [key: string]: any; // Assuming each row can have dynamic fields
+}
+
 const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) => {
   // SERVER
   const { data: fetchedTableContent } = api.table.getTableById.useQuery(
@@ -27,14 +32,28 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   const [columnSizing, setColumnSizing] = useState({}); // For resizing table columns
   const [data, setData] = useState<(RecordFieldsType)[]>([]);
 
-  const columns = useMemo(() =>
+  const columns = useMemo<ColumnDef<RecordFieldsType>[]>(() =>
     fields.map(field => ({
       accessorKey: field,
       header: field.charAt(0).toUpperCase() + field.slice(1),
-      // @ts-ignore
       cell: ({ cell, row }) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        return <EditableCell data={cell.getValue()} rowId={row.original.id} columnKey={field}/>
+        const value = cell.getValue();
+
+        const stringValue = value === null || value === undefined
+          ? undefined
+          : String(value);
+
+        const rowId = typeof row.original.id === 'string'
+          ? row.original.id
+          : String(row.original.id);
+
+        return (
+          <EditableCell
+            data={stringValue}
+            rowId={rowId}
+            columnKey={field}
+          />
+        );
       },
       minSize: 50,
       maxSize: 500,
