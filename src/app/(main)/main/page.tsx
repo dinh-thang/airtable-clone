@@ -14,6 +14,7 @@ import BaseFilterMenu from "~/app/_components/Menu/BaseFilterMenu";
 import Link from "next/link";
 import { api } from "~/trpc/react";
 import { useSession } from "next-auth/react";
+import BaseListContainer from "~/app/_components/Container/BaseListContainer";
 
 //  TODO: add a type for workspace here and continue
 
@@ -21,7 +22,7 @@ const MainPage = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-  const [currentWSpace, setCurrentWSpace] = useState();
+  const [currentWSpace, setCurrentWSpace] = useState<string>("123e4567-e89b-12d3-a456-426614174000");
   const [bases, setBases] = useState<string[]>([]);
   const [wSpace, setWSpace] = useState<string[]>([]);
 
@@ -29,8 +30,10 @@ const MainPage = () => {
     { userId: userId! },
   );
 
+  console.log(fetchedWSpace);
+
   const { data: fetchedBases } = api.workspace.getWorkspaceById.useQuery(
-    { id: currentWSpace! },
+    { id: currentWSpace },
   )
 
   return (
@@ -132,7 +135,7 @@ const MainPage = () => {
 
             {/* list of bases */}
             {/* TODO: display list of base here */}
-            {/*<BaseListContainer workspaceId={""} />*/}
+            <BaseListContainer workspaceId={currentWSpace} className={``} />
           </div>
         </div>
       </div>

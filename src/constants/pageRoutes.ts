@@ -5,4 +5,5 @@ export const pageRoutes = {
   PRICING: "/pricing",
   CO_BUILDER: "/cobuilder",
   MAIN: "/main",
+  BASE: "/base",
 }
