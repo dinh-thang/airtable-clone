@@ -16,10 +16,6 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
   // STATES
   const [curTable, setCurTable] = useState<string>("");
 
-  useEffect(() => {
-    console.log(curTable);
-  }, [curTable]);
-
   return (
     <main className={`font-base-sans text-[13px] leading-[1.38] overflow-hidden`}>
       {/* top bar */}
@@ -30,7 +26,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
       />
 
       <div className={`relative mt-14 flex h-[calc(100vh-56px)] flex-col`}>
-        <TableMenuBar tableId={curTable} setCurTable={setCurTable} className={`relative`} baseId={baseId} />
+        <TableMenuBar setCurTable={setCurTable} className={`relative`} baseId={baseId} />
 
         {/* table toolbar */}
         <ViewTopBar className={`relative z-20`} />

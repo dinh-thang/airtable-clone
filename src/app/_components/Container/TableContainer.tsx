@@ -98,7 +98,8 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
     <div className="flex items-start">
       <table className={`relative p-0 cursor-pointer ${className}`}>
         <thead className={`relative h-8`}>
-          {table.getHeaderGroups().map((headerGroup) => (
+        {table.getHeaderGroups().length > 0 ? (
+          table.getHeaderGroups().map((headerGroup) => (
             <tr className={`h-8`} key={headerGroup.id}>
               <HeaderWrapper className={`leading-6 min-w-16`}>
                 <Checkbox />
@@ -120,7 +121,9 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                   </p>
 
                   {/* TODO: drop down arrow menu here */}
-                  <span className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}>
+                  <span
+                    className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}
+                  >
                   <CellArrowIcon className={`opacity-75`} />
                 </span>
 
@@ -128,16 +131,23 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                     onMouseDown={header.getResizeHandler()}
                     onTouchStart={header.getResizeHandler()}
                     className={`absolute top-0 right-0 bottom-0 w-1 cursor-col-resize z-10 
-                    ${header.column.getIsResizing() ? 'bg-blue-500' : 'bg-transparent'} `}
+                  ${header.column.getIsResizing() ? 'bg-blue-500' : 'bg-transparent'} `}
                   ></div>
                 </HeaderWrapper>
               ))}
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr>
+            <td colSpan={table.getAllColumns().length} className="text-center py-4">
+            </td>
+          </tr>
+        )}
         </thead>
 
         <tbody>
-          {table.getRowModel().rows.map((row, index) => (
+        {table.getRowModel().rows.length > 0 ? (
+          table.getRowModel().rows.map((row, index) => (
             <tr className={`h-8`} key={row.id}>
               <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
                 {index + 1}
@@ -153,22 +163,34 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                 </td>
               ))}
             </tr>
-          ))}
+          ))
+        ) : (
+          <tr/>
+        )}
 
-          <tr
-            className={`relative h-8 w-full hover:bg-[#f8f8f8] bg-white border-b-[0.8px] border-r border-r-at-table-bot-gray`}>
-            <td className={`h-8 w-16 border-r border-r-at-table-bot-gray`}>
-              <AddRowCell customFunction={addEmptyRecord} tableId={tableId} className={`absolute top-2 left-2`} />
-            </td>
-          </tr>
+        <tr
+          className={`relative h-8 w-full hover:bg-[#f8f8f8] bg-white border-b-[0.8px] border-r border-r-at-table-bot-gray`}
+        >
+          <td className={`h-8 w-16 border-r border-r-at-table-bot-gray`}>
+            <AddRowCell
+              customFunction={addEmptyRecord}
+              tableId={tableId}
+              className={`absolute top-2 left-2`}
+            />
+          </td>
+        </tr>
         </tbody>
       </table>
 
       <table>
         <thead>
-          <tr>
-            <AddColumnCell setFields={setFields} tableId={tableId} className={`border-r-[0.8px] font-normal leading-6`} />
-          </tr>
+        <tr>
+          <AddColumnCell
+            setFields={setFields}
+            tableId={tableId}
+            className={`border-r-[0.8px] font-normal leading-6`}
+          />
+        </tr>
         </thead>
       </table>
     </div>

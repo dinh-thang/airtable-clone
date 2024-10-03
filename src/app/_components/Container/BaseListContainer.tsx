@@ -7,9 +7,10 @@ import { pageRoutes } from "~/constants/pageRoutes";
 import RocketIcon from "~/app/_components/Icon/Base/RocketIcon";
 
 const BaseListContainer: React.FC<BaseListContainerProps> = ({ workspaceId, className }) => {
-  const { data: baseList } = api.base.getAllBasesByWorkspaceIds.useQuery({
-    workspaceId,
-  });
+  const { data: baseList } = api.base.getAllBasesByWorkspaceIds.useQuery(
+    { workspaceId },
+    { enabled: !!workspaceId }
+  );
 
   if (!baseList) return;
 

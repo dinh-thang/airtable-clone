@@ -5,7 +5,7 @@ import { type Table, type TableContainerProps } from "~/interfaces/interfaces";
 import { api } from "~/trpc/react";
 import PlusIcon from "~/app/_components/Icon/Base/PlusIcon";
 
-const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, curTable, setCurTable }) => {
+const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, setCurTable }) => {
   const utils = api.useUtils();
 
   const { data: fetchedTables } = api.base.getListOfTables.useQuery(
@@ -58,8 +58,11 @@ const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, curTab
     if (!fetchedTables) return;
 
     setTables(fetchedTables.tables);
-    setCurTable!(fetchedTables.tables[0]!.id);
-    }, [fetchedTables]);
+
+    if (fetchedTables.tables.length > 0) {
+      setCurTable!(fetchedTables.tables[0]!.id);
+    }
+  }, [fetchedTables]);
 
   return (
     <div className={`h-8 bg-teal-500 ${className}`}>

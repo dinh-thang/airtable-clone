@@ -70,7 +70,7 @@ export const baseRouter = createTRPCRouter({
       })
     }),
 
-  getAllBasesByWorkspaceIds: protectedProcedure
+  getAllBasesByWorkspaceIds: publicProcedure
     .input(
       z.object({
         workspaceId: z.string().min(1),

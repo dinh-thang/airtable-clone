@@ -8,13 +8,17 @@ import { pageRoutes } from "~/constants/pageRoutes";
 import SearchBox from "~/app/_components/Form/SearchBox";
 import QuestionMarkIcon from "~/app/_components/Icon/QuestionMarkIcon";
 import NotificationIcon from "~/app/_components/Icon/NotificationIcon";
-import { useSession } from "next-auth/react";
-import UserProfileIcon from "~/app/_components/Icon/Main/UserProfileIcon";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
+import { useSession } from "next-auth/react";
+
+interface MainHeaderBarProps extends BaseComponentProps {
+  profileImage: string;
+}
 
 const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
-  const [searchVal, setSearchVal] = React.useState("");
   const { data } = useSession();
+  console.log(data);
+  const [searchVal, setSearchVal] = React.useState("");
   const [profileSelected, setProfileSelected] = useState<boolean>(false);
 
   return (

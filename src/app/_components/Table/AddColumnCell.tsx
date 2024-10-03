@@ -39,7 +39,7 @@ const AddColumnCell: React.FC<TableHeaderProps> = ({ className, setFields, table
 
   const [fieldName, setFieldName] = useState<string>("");
   const [fieldDesc, setFieldDesc] = useState<string>("");
-  const [fieldType, setFieldType] = useState<string>("");
+  const [fieldType, setFieldType] = useState<string>("text");
   const [position, setPosition] = useState({ left: "0", right: 'auto' });
 
   const [isAddingField, setIsAddingField] = useState<boolean>(false);
@@ -92,6 +92,20 @@ const AddColumnCell: React.FC<TableHeaderProps> = ({ className, setFields, table
   // Handle mutation
   const handleAddField = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (fieldType === "") {
+      // mutate on server
+      const newField = {
+        name: fieldName,
+        type: "text",
+        tableId: tableId!,
+        description: fieldDesc,
+      };
+
+      // Call the mutate function to perform the mutation
+      mutate(newField);
+      return;
+    }
 
     // mutate on server
     const newField = {
