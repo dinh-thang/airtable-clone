@@ -53,12 +53,8 @@ const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
 
           {/* profile img */}
           <div onClick={() => setProfileSelected(!profileSelected)} className={`h-7 relative flex items-center ml-2 justify-center`}>
-            {data?.user?.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className={`cursor-pointer rounded-full w-7 h-7`} src={data?.user?.image} alt={``}/>
-            ) : (
-             <UserProfileIcon/>
-            )}
+            {/*eslint-disable-next-line @next/next/no-img-element*/}
+            <img className={`cursor-pointer rounded-full w-7 h-7`} src={data?.user?.image ?? ""} alt={``}/>
           </div>
 
           {profileSelected ?? (
