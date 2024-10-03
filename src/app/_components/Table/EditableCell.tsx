@@ -30,7 +30,7 @@ const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId, setIsEditin
   const handleSave = async () => {
     setIsEditing!(false);
 
-    if (editingValue !== data) {
+    if (editingValue !== data && rowId) {
       mutate({
         rowId: rowId,
         fieldKey: columnKey,
