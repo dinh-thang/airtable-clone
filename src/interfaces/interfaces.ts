@@ -70,6 +70,7 @@ export interface CellProps extends BaseComponentProps {
   rowId: string;
   columnKey: string;
   currentData?: Field;
+  setIsEditing?: Dispatch<SetStateAction<boolean>>;
 }
 
 

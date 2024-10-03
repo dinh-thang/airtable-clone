@@ -17,16 +17,17 @@ import AddRowCell from "~/app/_components/Table/AddRowCell";
 type RecordFieldsType = Record<string, string | number | boolean | null>;
 
 const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) => {
-  // SERVER
-  const { data: fetchedTableContent } = api.table.getTableById.useQuery(
-    { id: tableId!},
-    { enabled: !!tableId }
-  )
-
   // STATES
   const [fields, setFields] = useState<string[]>([]); // List of table columns
   const [columnSizing, setColumnSizing] = useState({}); // For resizing table columns
   const [data, setData] = useState<(RecordFieldsType)[]>([]);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  // SERVER
+  const { data: fetchedTableContent } = api.table.getTableById.useQuery(
+    { id: tableId!},
+    { enabled: !!tableId && !isEditing }
+  )
 
   const columns = useMemo<ColumnDef<RecordFieldsType>[]>(() =>
     fields.map(field => ({
@@ -45,6 +46,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
 
         return (
           <EditableCell
+            setIsEditing={setIsEditing}
             data={stringValue}
             rowId={rowId}
             columnKey={field}

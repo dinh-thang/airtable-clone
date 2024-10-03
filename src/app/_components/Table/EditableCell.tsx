@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { type CellProps } from "~/interfaces/interfaces";
 import { api } from "~/trpc/react";
 
-const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId }) => {
-  const [editingValue, setEditingValue] = useState<string>(data!);
+const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId, setIsEditing }) => {
+  const [editingValue, setEditingValue] = useState<string>(data ?? "");
 
   const utils = api.useUtils();
   const { mutate } = api.record.updateRowContent.useMutation({
     onMutate() {
       void utils.table.getTableById.cancel();
-
       const prevData = data;
 
       return { prevData };
@@ -24,7 +23,13 @@ const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId }) => {
     },
   });
 
+  const handleFocus = () => {
+    setIsEditing!(true);
+  }
+
   const handleSave = async () => {
+    setIsEditing!(false);
+
     if (editingValue !== data) {
       mutate({
         rowId: rowId,
@@ -39,6 +44,7 @@ const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId }) => {
       className={`outline-none`}
       id={rowId + columnKey}
       value={editingValue}
+      onFocus={handleFocus}
       onChange={(e) => setEditingValue(e.target.value)}
       onBlur={handleSave}
       onKeyDown={(e) => {
