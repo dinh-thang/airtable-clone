@@ -68,7 +68,7 @@ const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, curTab
         {tables.map((table, index) => (
           <div
             key={index}
-            className={`flex h-full items-center rounded-t-[4px] px-3 ${table.id === curTable ? "bg-white" : ""}`}
+            className={`flex h-full items-center rounded-t-[4px] px-3`}
           >
             <span className={`cursor-pointer`} onClick={() => switchTable(table.id)}>
               {table.name}

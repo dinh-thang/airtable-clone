@@ -36,7 +36,9 @@ const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId }) => {
 
   return (
     <input
-      value={editingValue ?? ""}
+      className={`outline-none`}
+      id={rowId + columnKey}
+      value={editingValue}
       onChange={(e) => setEditingValue(e.target.value)}
       onBlur={handleSave}
       onKeyDown={(e) => {

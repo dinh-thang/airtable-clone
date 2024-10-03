@@ -104,10 +104,10 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                 <Checkbox />
               </HeaderWrapper>
 
-              {headerGroup.headers.map((header) => (
+              {headerGroup.headers.map((header, index) => (
                 <HeaderWrapper
                   className={`border-r-[0.8px] font-normal leading-6 min-w-20`}
-                  key={header.id}
+                  key={header.id + index}
                   style={{ width: header.getSize() }}
                 >
                   <p className={`text-[13px] pl-2 text-start`}>
@@ -143,10 +143,10 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                 {index + 1}
               </td>
 
-              {row.getVisibleCells().map((cell) => (
+              {row.getVisibleCells().map((cell, index) => (
                 <td
-                  className={`border-r-[0.8px] bg-white pl-2 border-b-[0.8px]`}
-                  key={cell.id}
+                  className={`focus:border-at-btn-primary border-r-[0.8px] bg-white px-2 border-b-[0.8px]`}
+                  key={cell.id + index}
                   style={{ width: cell.column.getSize() }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

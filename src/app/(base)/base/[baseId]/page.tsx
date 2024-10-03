@@ -21,7 +21,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
   }, [curTable]);
 
   return (
-    <main className={`font-base-sans text-[13px] leading-[1.38]`}>
+    <main className={`font-base-sans text-[13px] leading-[1.38] overflow-hidden`}>
       {/* top bar */}
       <BaseTopBar
         baseId={baseId}
@@ -35,7 +35,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
         {/* table toolbar */}
         <ViewTopBar className={`relative z-20`} />
 
-        <div className={`relative z-10 h-full`}>
+        <div className={`relative z-10 h-full overflow-auto`}>
           <TableContainer
             tableId={curTable}
             className={`absolute left-0 top-0 z-20 w-auto overflow-auto`}
