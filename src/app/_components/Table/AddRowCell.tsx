@@ -29,7 +29,7 @@ const AddRowCell: React.FC<TableHeaderProps> = ({tableId, setFields, className, 
     onSettled() {
       // Sync with server once mutation has settled
       void utils.table.getTableById.invalidate();
-    },
+      },
   });
 
   const handleClick = () => {

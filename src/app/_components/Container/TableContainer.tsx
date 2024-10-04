@@ -22,9 +22,10 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   const [columnSizing, setColumnSizing] = useState({}); // For resizing table columns
   const [data, setData] = useState<(RecordFieldsType)[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [rowIsReady, setRowIsReady] = useState<boolean>(false);
 
   // SERVER
-  const { data: fetchedTableContent } = api.table.getTableById.useQuery(
+  const { data: fetchedTableContent, isLoading } = api.table.getTableById.useQuery(
     { id: tableId!},
     { enabled: !!tableId && !isEditing }
   )
@@ -96,38 +97,57 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
     getRowId: (originalRow: RecordFieldsType) => originalRow.id as string,
   })
 
+  if (isLoading || !tableId) {
+    return (
+      <div className={`flex h-full w-full items-center justify-center`}>
+        <div
+          className="text-surface inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-at-btn-primary"
+          role="status"
+        >
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            Loading...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-start">
-      <table className={`relative p-0 cursor-pointer border-r-0 ${className}`}>
+      <table className={`relative cursor-pointer border-r-0 p-0 ${className}`}>
         <thead className={`relative h-8`}>
           {table.getHeaderGroups().length > 0 ? (
             table.getHeaderGroups().map((headerGroup) => (
               <tr className={`flex h-8`} key={headerGroup.id}>
-                <HeaderWrapper className={`flex leading-6 h-8 min-w-16`}>
+                <HeaderWrapper className={`flex h-8 min-w-16 leading-6`}>
                   <Checkbox />
                 </HeaderWrapper>
 
                 {headerGroup.headers.map((header, index) => (
                   <HeaderWrapper
-                    className={`flex items-center flex-row border-r-[0.8px] h-8 font-normal leading-6`}
+                    className={`flex h-8 flex-row items-center border-r-[0.8px] font-normal leading-6`}
                     key={header.id + index}
                     style={{ width: header.getSize() }}
                   >
-                    <span className={`relative flex h-full items-center w-[124px] flex-grow`}>
-                      <p className={`relative overflow-clip w-full text-[13px] pl-2 text-start h-auto whitespace-nowrap text-ellipsis`}>
+                    <span
+                      className={`relative flex h-full w-[124px] flex-grow items-center`}
+                    >
+                      <p
+                        className={`relative h-auto w-full overflow-clip text-ellipsis whitespace-nowrap pl-2 text-start text-[13px]`}
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </p>
                     </span>
 
                     {/* TODO: drop down arrow menu here */}
                     <span
                       // className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}
-                      className={`relative flex flex-end h-full items-center right-0 top-0 bottom-0 pl-1 pr-1.5`}
+                      className={`flex-end relative bottom-0 right-0 top-0 flex h-full items-center pl-1 pr-1.5`}
                     >
                       <CellArrowIcon className={`opacity-75`} />
                     </span>
@@ -135,8 +155,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                     <div
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}
-                      className={`absolute top-0 right-0 bottom-0 w-1 cursor-col-resize z-10 
-                    ${header.column.getIsResizing() ? 'bg-blue-500' : 'bg-transparent'} `}
+                      className={`absolute bottom-0 right-0 top-0 z-10 w-1 cursor-col-resize ${header.column.getIsResizing() ? "bg-blue-500" : "bg-transparent"} `}
                     ></div>
                   </HeaderWrapper>
                 ))}
@@ -144,8 +163,10 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
             ))
           ) : (
             <tr>
-              <td colSpan={table.getAllColumns().length} className="text-center py-4">
-              </td>
+              <td
+                colSpan={table.getAllColumns().length}
+                className="py-4 text-center"
+              ></td>
             </tr>
           )}
         </thead>
@@ -153,14 +174,17 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
         <tbody>
           {table.getRowModel().rows.length > 0 ? (
             table.getRowModel().rows.map((row, index) => (
-              <tr className={`relative flex h-8 hover:bg-[#f8f8f8] bg-white`} key={row.id}>
-                <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
+              <tr
+                className={`relative flex h-8 bg-white hover:bg-[#f8f8f8]`}
+                key={row.id}
+              >
+                <td className="min-w-16 border-b-[0.8px] border-r border-r-at-table-bot-gray bg-white pl-2 leading-6">
                   {index + 1}
                 </td>
 
                 {row.getVisibleCells().map((cell, index) => (
                   <td
-                    className={`flex focus:border-at-btn-primary border-r-[0.8px] bg-white border-b-[0.8px]`}
+                    className={`flex border-b-[0.8px] border-r-[0.8px] bg-white focus:border-at-btn-primary`}
                     key={cell.id + index}
                     style={{ width: cell.column.getSize() }}
                   >
@@ -170,30 +194,32 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
               </tr>
             ))
           ) : (
-            <tr className={`hover:bg-[#f8f8f8]`}/>
+            <tr className={`hover:bg-[#f8f8f8]`} />
           )}
 
           <tr
-            className={`relative flex h-8 w-full hover:bg-[#f8f8f8] bg-white`}
+            className={`relative flex h-8 w-full bg-white hover:bg-[#f8f8f8]`}
           >
-            <td className={`h-8 w-full border-r-[0.8px] border-r-at-table-bot-gray`}>
+            <td
+              className={`h-8 w-full border-b-[0.8px] border-r-[0.8px] border-at-table-bot-gray`}
+            >
               <AddRowCell
                 customFunction={addEmptyRecord}
                 tableId={tableId}
-                className={`absolute top-2 left-2`}
+                className={`absolute left-2 top-2`}
               />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <table className={`relative p-0 z-50 border-none m-0`}>
+      <table className={`relative z-50 m-0 border-none p-0`}>
         <thead className={`relative h-8`}>
           <tr>
             <AddColumnCell
               setFields={setFields}
               tableId={tableId}
-              className={`flex justify-center h-8 min-w-16 border-r-[0.8px] font-normal leading-6`}
+              className={`flex h-8 min-w-16 justify-center border-r-[0.8px] font-normal leading-6`}
             />
           </tr>
         </thead>

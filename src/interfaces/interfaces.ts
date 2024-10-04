@@ -56,6 +56,7 @@ export interface TableHeaderProps extends BaseComponentProps {
   setFields?: Dispatch<SetStateAction<string[]>>;
   tableId?: string;
   customFunction?: () => void;
+  setReady?: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface Field {
@@ -71,6 +72,7 @@ export interface CellProps extends BaseComponentProps {
   columnKey: string;
   currentData?: Field;
   setIsEditing?: Dispatch<SetStateAction<boolean>>;
+  isReady?: boolean;
 }
 
 

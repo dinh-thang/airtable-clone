@@ -8,7 +8,7 @@ import PlusIcon from "~/app/_components/Icon/Base/PlusIcon";
 const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, setCurTable }) => {
   const utils = api.useUtils();
 
-  const { data: fetchedTables } = api.base.getListOfTables.useQuery(
+  const { data: fetchedTables, isLoading } = api.base.getListOfTables.useQuery(
     { baseId: baseId! },
     { enabled: !!baseId }
   );
@@ -68,25 +68,55 @@ const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, setCur
     <div className={`h-8 bg-teal-500 ${className}`}>
       {/* left most group */}
       <div className={`flex h-8 flex-row bg-black/10 pl-2`}>
+        {isLoading && (
+          <div className={`relative flex w-full items-center`}>
+            <div
+              className={`mx-3 flex h-3 w-16 animate-pulse rounded-full bg-black/10`}
+            />
+            <div
+              className={`mx-3 flex h-3 w-20 animate-pulse rounded-full bg-black/10`}
+            />
+            <div
+              className={`mx-3 flex h-3 w-16 animate-pulse rounded-full bg-black/10`}
+            />
+            <div
+              className={`mx-3 flex h-3 w-20 animate-pulse rounded-full bg-black/10`}
+            />
+            <div
+              className={`mx-3 flex h-3 w-16 animate-pulse rounded-full bg-black/10`}
+            />
+          </div>
+        )}
+
         {tables.map((table, index) => (
-          <div
-            key={index}
-            className={`flex h-full items-center rounded-t-[4px] px-3`}
-          >
-            <span className={`cursor-pointer`} onClick={() => switchTable(table.id)}>
-              {table.name}
-            </span>
+          <div key={index} className={`flex flex-row items-center`}>
+            <div
+              className={`flex h-full items-center rounded-t-[4px] px-3 hover:bg-black/10`}
+            >
+              <span
+                className={`cursor-pointer`}
+                onClick={() => switchTable(table.id)}
+              >
+                {table.name}
+              </span>
+            </div>
+
+            <div className={`h-4 w-[1px] bg-black/30`} />
           </div>
         ))}
 
         {/* cell to add table */}
-        <div onClick={handleAddTable} className={`flex h-full items-center px-3`}>
-          <span className={`flex flex-row cursor-pointer`}>
-            <PlusIcon/>
-            <p className={`pl-3`}>Add or import</p>
-          </span>
-        </div>
-
+        {!isLoading && (
+          <div
+            onClick={handleAddTable}
+            className={`flex h-full items-center rounded-t-[4px] px-3 hover:bg-black/10`}
+          >
+            <span className={`flex cursor-pointer flex-row`}>
+              <PlusIcon />
+              <p className={`pl-3`}>Add or import</p>
+            </span>
+          </div>
+        )}
       </div>
 
       {/* curved end */}
