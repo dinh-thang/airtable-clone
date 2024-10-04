@@ -45,6 +45,8 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
           ? row.original.id
           : String(row.original.id);
 
+        if (rowId === "temp") return;
+
         return (
           <EditableCell
             setIsEditing={setIsEditing}
@@ -77,7 +79,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
 
   const addEmptyRecord = () => {
     const newRecord = {
-      id: crypto.randomUUID(),
+      id: "temp",
       ...fields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
     };
 
