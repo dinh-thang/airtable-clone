@@ -98,101 +98,104 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
 
   return (
     <div className="flex items-start">
-      <table className={`relative p-0 cursor-pointer ${className}`}>
+      <table className={`relative p-0 cursor-pointer border-r-0 ${className}`}>
         <thead className={`relative h-8`}>
-        {table.getHeaderGroups().length > 0 ? (
-          table.getHeaderGroups().map((headerGroup) => (
-            <tr className={`h-8`} key={headerGroup.id}>
-              <HeaderWrapper className={`leading-6 min-w-16`}>
-                <Checkbox />
-              </HeaderWrapper>
-
-              {headerGroup.headers.map((header, index) => (
-                <HeaderWrapper
-                  className={`border-r-[0.8px] font-normal leading-6 min-w-20`}
-                  key={header.id + index}
-                  style={{ width: header.getSize() }}
-                >
-                  <p className={`text-[13px] pl-2 text-start`}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                  </p>
-
-                  {/* TODO: drop down arrow menu here */}
-                  <span
-                    className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}
-                  >
-                  <CellArrowIcon className={`opacity-75`} />
-                </span>
-
-                  <div
-                    onMouseDown={header.getResizeHandler()}
-                    onTouchStart={header.getResizeHandler()}
-                    className={`absolute top-0 right-0 bottom-0 w-1 cursor-col-resize z-10 
-                  ${header.column.getIsResizing() ? 'bg-blue-500' : 'bg-transparent'} `}
-                  ></div>
+          {table.getHeaderGroups().length > 0 ? (
+            table.getHeaderGroups().map((headerGroup) => (
+              <tr className={`flex h-8`} key={headerGroup.id}>
+                <HeaderWrapper className={`flex leading-6 h-8 min-w-16`}>
+                  <Checkbox />
                 </HeaderWrapper>
-              ))}
+
+                {headerGroup.headers.map((header, index) => (
+                  <HeaderWrapper
+                    className={`flex items-center flex-row border-r-[0.8px] h-8 font-normal leading-6`}
+                    key={header.id + index}
+                    style={{ width: header.getSize() }}
+                  >
+                    <span className={`relative flex h-full items-center w-[124px] flex-grow`}>
+                      <p className={`relative overflow-clip w-full text-[13px] pl-2 text-start h-auto whitespace-nowrap text-ellipsis`}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      </p>
+                    </span>
+
+                    {/* TODO: drop down arrow menu here */}
+                    <span
+                      // className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}
+                      className={`relative flex flex-end h-full items-center right-0 top-0 bottom-0 pl-1 pr-1.5`}
+                    >
+                      <CellArrowIcon className={`opacity-75`} />
+                    </span>
+
+                    <div
+                      onMouseDown={header.getResizeHandler()}
+                      onTouchStart={header.getResizeHandler()}
+                      className={`absolute top-0 right-0 bottom-0 w-1 cursor-col-resize z-10 
+                    ${header.column.getIsResizing() ? 'bg-blue-500' : 'bg-transparent'} `}
+                    ></div>
+                  </HeaderWrapper>
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={table.getAllColumns().length} className="text-center py-4">
+              </td>
             </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan={table.getAllColumns().length} className="text-center py-4">
-            </td>
-          </tr>
-        )}
+          )}
         </thead>
 
         <tbody>
-        {table.getRowModel().rows.length > 0 ? (
-          table.getRowModel().rows.map((row, index) => (
-            <tr className={`h-8`} key={row.id}>
-              <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
-                {index + 1}
-              </td>
-
-              {row.getVisibleCells().map((cell, index) => (
-                <td
-                  className={`focus:border-at-btn-primary border-r-[0.8px] bg-white px-2 border-b-[0.8px]`}
-                  key={cell.id + index}
-                  style={{ width: cell.column.getSize() }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {table.getRowModel().rows.length > 0 ? (
+            table.getRowModel().rows.map((row, index) => (
+              <tr className={`relative flex h-8 hover:bg-[#f8f8f8] bg-white`} key={row.id}>
+                <td className="leading-6 pl-2 min-w-16 border-r bg-white border-b-[0.8px] border-r-at-table-bot-gray">
+                  {index + 1}
                 </td>
-              ))}
-            </tr>
-          ))
-        ) : (
-          <tr/>
-        )}
 
-        <tr
-          className={`relative h-8 w-full hover:bg-[#f8f8f8] bg-white border-b-[0.8px] border-r border-r-at-table-bot-gray`}
-        >
-          <td className={`h-8 w-16 border-r border-r-at-table-bot-gray`}>
-            <AddRowCell
-              customFunction={addEmptyRecord}
-              tableId={tableId}
-              className={`absolute top-2 left-2`}
-            />
-          </td>
-        </tr>
+                {row.getVisibleCells().map((cell, index) => (
+                  <td
+                    className={`flex focus:border-at-btn-primary border-r-[0.8px] bg-white border-b-[0.8px]`}
+                    key={cell.id + index}
+                    style={{ width: cell.column.getSize() }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr className={`hover:bg-[#f8f8f8]`}/>
+          )}
+
+          <tr
+            className={`relative flex h-8 w-full hover:bg-[#f8f8f8] bg-white`}
+          >
+            <td className={`h-8 w-full border-r-[0.8px] border-r-at-table-bot-gray`}>
+              <AddRowCell
+                customFunction={addEmptyRecord}
+                tableId={tableId}
+                className={`absolute top-2 left-2`}
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
 
-      <table>
-        <thead>
-        <tr>
-          <AddColumnCell
-            setFields={setFields}
-            tableId={tableId}
-            className={`border-r-[0.8px] font-normal leading-6`}
-          />
-        </tr>
+      <table className={`relative p-0 z-50 border-none m-0`}>
+        <thead className={`relative h-8`}>
+          <tr>
+            <AddColumnCell
+              setFields={setFields}
+              tableId={tableId}
+              className={`flex justify-center h-8 min-w-16 border-r-[0.8px] font-normal leading-6`}
+            />
+          </tr>
         </thead>
       </table>
     </div>

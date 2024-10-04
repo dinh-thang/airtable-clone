@@ -41,7 +41,7 @@ const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId, setIsEditin
 
   return (
     <input
-      className={`outline-none`}
+      className={`w-full outline-none`}
       id={rowId + columnKey}
       value={editingValue}
       onFocus={handleFocus}

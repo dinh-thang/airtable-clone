@@ -34,7 +34,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
         <div className={`relative z-10 h-full overflow-auto`}>
           <TableContainer
             tableId={curTable}
-            className={`absolute left-0 top-0 z-20 w-auto overflow-auto`}
+            className={`left-0 top-0 z-20 w-auto overflow-auto`}
           />
         </div>
       </div>

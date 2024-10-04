@@ -8,7 +8,7 @@ const HeaderWrapper = forwardRef<HTMLTableCellElement, TableHeaderProps>(
         ref={ref}
         onClick={onClick}
         style={style}
-        className={`relative border-b hover:bg-[#f8f8f8] cursor-pointer border-b-at-table-bot-gray p-0 bg-[#f5f5f5] h-8 max-h-8 ${className}`}
+        className={`relative border-b box-border h-8 hover:bg-[#f8f8f8] cursor-pointer border-b-at-table-bot-gray p-0 bg-[#f5f5f5] ${className}`}
       >
         {children}
       </th>
