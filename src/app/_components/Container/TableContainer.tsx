@@ -1,7 +1,7 @@
 "use client"
 
 import { type ColumnDef, getCoreRowModel } from "@tanstack/table-core";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { flexRender, useReactTable } from "@tanstack/react-table";
 import { api } from "~/trpc/react";
 
@@ -13,6 +13,7 @@ import CellArrowIcon from "~/app/_components/Icon/Base/CellArrowIcon";
 import AddColumnCell from "~/app/_components/Table/AddColumnCell";
 import EditableCell from "~/app/_components/Table/EditableCell";
 import AddRowCell from "~/app/_components/Table/AddRowCell";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 type RecordFieldsType = Record<string, string | number | boolean | null>;
 
@@ -22,7 +23,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   const [columnSizing, setColumnSizing] = useState({}); // For resizing table columns
   const [data, setData] = useState<(RecordFieldsType)[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [rowIsReady, setRowIsReady] = useState<boolean>(false);
+  const parentRef = useRef(null);
 
   // SERVER
   const { data: fetchedTableContent, isLoading } = api.table.getTableById.useQuery(
@@ -99,6 +100,13 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
     getRowId: (originalRow: RecordFieldsType) => originalRow.id as string,
   })
 
+  const rowVirtualizer = useVirtualizer({
+    count: table.getRowModel().rows.length,
+    estimateSize: () => 32,
+    getScrollElement: () => parentRef.current,
+    overscan: 5,
+  });
+
   if (isLoading || !tableId) {
     return (
       <div className={`flex h-full w-full items-center justify-center`}>
@@ -115,7 +123,7 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   }
 
   return (
-    <div className="flex items-start">
+    <div ref={parentRef} className="flex items-start">
       <table className={`relative cursor-pointer border-r-0 p-0 ${className}`}>
         <thead className={`relative h-8`}>
           {table.getHeaderGroups().length > 0 ? (
@@ -175,13 +183,15 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
 
         <tbody>
           {table.getRowModel().rows.length > 0 ? (
-            table.getRowModel().rows.map((row, index) => (
-              <tr
+            rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const row = table.getRowModel().rows[virtualRow.index];
+
+              if (row) return (<tr
                 className={`relative flex h-8 bg-white hover:bg-[#f8f8f8]`}
                 key={row.id}
               >
                 <td className="min-w-16 border-b-[0.8px] border-r border-r-at-table-bot-gray bg-white pl-2 leading-6">
-                  {index + 1}
+                  {virtualRow.index + 1}
                 </td>
 
                 {row.getVisibleCells().map((cell, index) => (
@@ -193,8 +203,8 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
-              </tr>
-            ))
+              </tr>);
+            })
           ) : (
             <tr className={`hover:bg-[#f8f8f8]`} />
           )}
