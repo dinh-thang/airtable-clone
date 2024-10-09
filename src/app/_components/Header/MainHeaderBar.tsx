@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainHamMenu from "~/app/_components/Icon/Main/MainHamMenu";
 import AirTableMainLogo from "~/app/_components/Icon/Main/AirTableMainLogo";
 import Link from "next/link";
@@ -11,15 +11,20 @@ import NotificationIcon from "~/app/_components/Icon/NotificationIcon";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
 import { useSession } from "next-auth/react";
 
-interface MainHeaderBarProps extends BaseComponentProps {
-  profileImage: string;
-}
-
 const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
   const { data } = useSession();
-  console.log(data);
-  const [searchVal, setSearchVal] = React.useState("");
+
+  const [searchVal, setSearchVal] = useState("");
   const [profileSelected, setProfileSelected] = useState<boolean>(false);
+  const [image, setImage] = useState<string>("");
+
+  useEffect(() => {
+    if (!data) return;
+    if (!data.user) return;
+    if (!data.user.image) return;
+
+    setImage(data.user.image);
+  }, [data]);
 
   return (
     <header className={`flex w-full items-center shadow-at-main-nav h-14 bg-white ${className}`}>
@@ -58,7 +63,7 @@ const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
           {/* profile img */}
           <div onClick={() => setProfileSelected(!profileSelected)} className={`h-7 relative flex items-center ml-2 justify-center`}>
             {/*eslint-disable-next-line @next/next/no-img-element*/}
-            <img className={`cursor-pointer rounded-full w-7 h-7`} src={data?.user?.image ?? ""} alt={``}/>
+            <img className={`cursor-pointer rounded-full w-7 h-7`} src={image} alt={``}/>
           </div>
 
           {profileSelected ?? (

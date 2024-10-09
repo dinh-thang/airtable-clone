@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { type CellProps } from "~/interfaces/interfaces";
 import { api } from "~/trpc/react";
+import cuid from "cuid";
 
 const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId, setIsEditing }) => {
   const [editingValue, setEditingValue] = useState<string>(data ?? "");
@@ -42,7 +43,7 @@ const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId, setIsEditin
   return (
     <input
       className={`w-full outline-none`}
-      id={rowId + columnKey}
+      id={cuid()}
       value={editingValue}
       onFocus={handleFocus}
       onChange={(e) => setEditingValue(e.target.value)}

@@ -53,10 +53,16 @@ export const tableRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().min(1),
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.string().nullish(),
+        direction: z.enum(['forward', 'backward']).optional(),
       })
     )
     .query(async ({ ctx, input }) => {
-      return ctx.db.table.findUnique({
+      const limit = input.limit ?? 100;
+      const cursor = input.cursor ? { id: input.cursor } : undefined;
+
+      const table = await ctx.db.table.findUnique({
         where: {
           id: input.id,
         },
@@ -64,7 +70,10 @@ export const tableRouter = createTRPCRouter({
           records: {
             orderBy: {
               createdAt: "asc"
-            }
+            },
+            take: limit + 1,
+            cursor: cursor,
+            skip: cursor ? 1 : 0,
           },
           fields: {
             orderBy: {
@@ -72,6 +81,20 @@ export const tableRouter = createTRPCRouter({
             }
           }
         },
-      })
+      });
+
+      if (!table) return null;
+
+      let nextCursor: typeof input.cursor | undefined = undefined;
+
+      if (table.records.length > limit) {
+        const nextItem = table.records.pop();
+        nextCursor = nextItem?.id
+      }
+
+      return {
+        table,
+        nextCursor,
+      }
     }),
 })

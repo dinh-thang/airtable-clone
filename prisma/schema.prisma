@@ -7,10 +7,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url      = env("DATABASE_URL")
 }
 
@@ -32,6 +28,7 @@ model Account {
   refresh_token_expires_in Int?
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -61,6 +58,8 @@ model Workspace {
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Base {
@@ -72,6 +71,8 @@ model Base {
 
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
 }
 
 model Table {
@@ -84,6 +85,8 @@ model Table {
 
   baseId String
   base   Base   @relation(fields: [baseId], references: [id], onDelete: Cascade)
+
+  @@index([baseId])
 }
 
 model Record {
@@ -93,6 +96,8 @@ model Record {
 
   tableId String
   table   Table  @relation(fields: [tableId], references: [id], onDelete: Cascade)
+
+  @@index([tableId])
 }
 
 model Field {
@@ -104,6 +109,8 @@ model Field {
 
   tableId String
   table   Table  @relation(fields: [tableId], references: [id], onDelete: Cascade)
+
+  @@index([tableId])
 }
 
 model VerificationToken {
@@ -112,4 +119,5 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@index([identifier])
 }

@@ -2,11 +2,11 @@ import { z } from "zod";
 
 import {
   createTRPCRouter,
-  protectedProcedure,
+  protectedProcedure, publicProcedure
 } from "~/server/api/trpc";
 
 export const fieldRouter = createTRPCRouter({
-  createField: protectedProcedure
+  createField: publicProcedure
     .input(
       z.object({
         name: z.string().min(1),

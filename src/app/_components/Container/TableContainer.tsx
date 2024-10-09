@@ -1,9 +1,11 @@
 "use client"
 
-import { type ColumnDef, getCoreRowModel } from "@tanstack/table-core";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { flexRender, useReactTable } from "@tanstack/react-table";
+import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "~/trpc/react";
+
+import { flexRender, useReactTable } from "@tanstack/react-table";
+import { type ColumnDef, getCoreRowModel } from "@tanstack/table-core";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 import { type TableContainerProps } from "~/interfaces/interfaces";
 
@@ -13,22 +15,41 @@ import CellArrowIcon from "~/app/_components/Icon/Base/CellArrowIcon";
 import AddColumnCell from "~/app/_components/Table/AddColumnCell";
 import EditableCell from "~/app/_components/Table/EditableCell";
 import AddRowCell from "~/app/_components/Table/AddRowCell";
-import { useVirtualizer } from "@tanstack/react-virtual";
+
+import cuid from "cuid";
+
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: JsonValue }
+  | JsonValue[];
 
 type RecordFieldsType = Record<string, string | number | boolean | null>;
 
-const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) => {
+const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ className, tableId }, ref) => {
   // STATES
-  const [fields, setFields] = useState<string[]>([]); // List of table columns
-  const [columnSizing, setColumnSizing] = useState({}); // For resizing table columns
-  const [data, setData] = useState<(RecordFieldsType)[]>([]);
+  const [columnSizing, setColumnSizing] = useState({});
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const parentRef = useRef(null);
+  const [fields, setFields] = useState<string[]>([]);
+  const [data, setData] = useState<RecordFieldsType[]>([])
+
+  const parentRef = useRef<HTMLDivElement | null>(null);
 
   // SERVER
-  const { data: fetchedTableContent, isLoading } = api.table.getTableById.useQuery(
-    { id: tableId!},
-    { enabled: !!tableId && !isEditing }
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    data: fetchedTableContent,
+    isLoading
+  } = api.table.getTableById.useInfiniteQuery(
+    { limit: 50, id: tableId! },
+    {
+      getNextPageParam: (lastPage) => lastPage!.nextCursor,
+      enabled: !!tableId && !isEditing,
+    }
   )
 
   const columns = useMemo<ColumnDef<RecordFieldsType>[]>(() =>
@@ -62,29 +83,65 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
     })), [fields]
   );
 
-  useEffect(() => {
+  const handleScroll = useCallback(() => {
+    if (ref && 'current' in ref && ref.current) {
+      const { scrollTop, scrollHeight, clientHeight } = ref.current;
+
+      if (scrollHeight - scrollTop - clientHeight < 500 && hasNextPage && !isFetchingNextPage) {
+        void fetchNextPage();
+      }
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const updateData = () => {
+    if (!fetchedTableContent) return [];
+
+    const tmpData = fetchedTableContent.pages.flatMap((page) => (
+      page!.table.records.map((record) => ({
+        id: record.id,
+        ...record.fields as RecordFieldsType,
+      }))
+    ));
+
+    setData(tmpData);
+  }
+
+  const updateFields = () => {
     if (!fetchedTableContent) return;
 
-    // update the rows with data
-    const mappedData = fetchedTableContent?.records.map((record) => ({
-      id: record.id,
-      ...record.fields as RecordFieldsType,
-    })) ?? [];
-    setData(mappedData); // Store the fetched data in state
+    const tmpFields = Array.from(
+      new Set(
+        fetchedTableContent?.pages.flatMap((page) =>
+          page!.table.fields.map((record) => record.name ?? "error field")
+        ) ?? []
+      )
+    );
 
-    // update the columns state
-    const extractedFields = fetchedTableContent.fields.map((field) => field.name);
-    setFields(extractedFields);
+    console.log(tmpFields);
 
-  }, [fetchedTableContent]);
+    setFields(tmpFields);
+  }
+
+  useEffect(() => {
+    updateFields();
+    updateData();
+
+    if (ref && 'current' in ref && ref.current) {
+      const eRef = ref.current;
+      if (eRef) {
+        eRef.addEventListener('scroll', handleScroll, { passive: true });
+        return () => eRef.removeEventListener('scroll', handleScroll);
+      }
+    }
+  }, [fetchedTableContent, handleScroll]);
 
   const addEmptyRecord = () => {
     const newRecord = {
-      id: "temp",
+      id: cuid(),
       ...fields.reduce((acc, field) => ({ ...acc, [field]: "" }), {}),
     };
 
-    setData((prevData) => [...prevData, newRecord]);  // Add the new record to the existing data
+    setData((prevData) => [...prevData, newRecord]);
   };
 
   const table = useReactTable({
@@ -103,7 +160,15 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
   const rowVirtualizer = useVirtualizer({
     count: table.getRowModel().rows.length,
     estimateSize: () => 32,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => {
+      if (typeof ref === 'function') {
+        return document.body; 
+      }
+      if (!ref!.current) {
+        return document.body;
+      }
+      return parentRef.current;
+    },
     overscan: 5,
   });
 
@@ -181,14 +246,14 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
           )}
         </thead>
 
-        <tbody>
+        <tbody className={``}>
           {table.getRowModel().rows.length > 0 ? (
             rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const row = table.getRowModel().rows[virtualRow.index];
 
               if (row) return (<tr
                 className={`relative flex h-8 bg-white hover:bg-[#f8f8f8]`}
-                key={row.id}
+                key={row.id + virtualRow.index}
               >
                 <td className="min-w-16 border-b-[0.8px] border-r border-r-at-table-bot-gray bg-white pl-2 leading-6">
                   {virtualRow.index + 1}
@@ -238,6 +303,9 @@ const TableContainer: React.FC<TableContainerProps> = ({ className, tableId }) =
       </table>
     </div>
   );
-};
+});
+
+// Set displayName for debugging purposes
+TableContainer.displayName = 'TableContainer';
 
 export default TableContainer;

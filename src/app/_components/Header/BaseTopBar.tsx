@@ -18,7 +18,10 @@ export interface BaseTopBarProps extends BaseComponentProps {
 }
 
 const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, userImage, baseId }) => {
-  const { data: base, isLoading } = api.base.getBaseById.useQuery({ id: baseId });
+  const { data: base, isLoading } = api.base.getBaseById.useQuery(
+    { id: baseId },
+    { enabled: !!baseId }
+  );
   const isFetching = useIsFetching();
 
   return (

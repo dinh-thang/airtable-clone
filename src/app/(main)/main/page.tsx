@@ -19,14 +19,6 @@ import BaseListContainer from "~/app/_components/Container/BaseListContainer";
 const MainPage = () => {
   const [currentWSpace, setCurrentWSpace] = useState<string>("123e4567-e89b-12d3-a456-426614174000");
 
-  // const { data: fetchedWSpace } = api.user.getAllWorkspacesByUserId.useQuery(
-  //   { userId: userId! },
-  // );
-  //
-  // const { data: fetchedBases } = api.workspace.getWorkspaceById.useQuery(
-  //   { id: currentWSpace },
-  // )
-
   return (
     <main className="flex h-screen w-screen flex-col">
       <div className={`absolute h-full w-full overflow-hidden bg-[#F9FAFB]`}>
