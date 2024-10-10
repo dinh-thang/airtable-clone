@@ -116,9 +116,6 @@ const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ classN
         ) ?? []
       )
     );
-
-    console.log(tmpFields);
-
     setFields(tmpFields);
   }
 
@@ -162,7 +159,7 @@ const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ classN
     estimateSize: () => 32,
     getScrollElement: () => {
       if (typeof ref === 'function') {
-        return document.body; 
+        return document.body;
       }
       if (!ref!.current) {
         return document.body;
