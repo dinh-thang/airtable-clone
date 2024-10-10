@@ -32,7 +32,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
         {/* table toolbar */}
         <ViewTopBar className={`relative z-20`} />
 
-        <div ref={scrollRef} className={`relative z-10 h-full overflow-auto`}>
+        <div ref={scrollRef} className={`relative h-full z-10 overflow-auto`}>
           <TableContainer
             ref={scrollRef}
             tableId={curTable}
