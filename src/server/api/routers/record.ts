@@ -67,4 +67,36 @@ export const recordRouter = createTRPCRouter({
       });
     }),
 
+  getAllRecordsByTableId: publicProcedure
+    .input(z.object({
+      tableId: z.string(),
+      limit: z.number().min(1).max(100),
+      cursor: z.string().nullish(),
+    }))
+    .query(async ({ ctx, input }) => {
+      const { tableId, limit, cursor } = input;
+
+      const records = await ctx.db.record.findMany({
+        take: limit + 1,
+        where: {
+          tableId: tableId,
+        },
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "asc",
+        }
+      })
+
+      let nextCursor: typeof cursor | undefined = undefined;
+
+      if (records.length > limit) {
+        const nextRecord = records.pop();
+        nextCursor = nextRecord?.id;
+      }
+
+      return {
+        records,
+        nextCursor,
+      }
+    })
 })

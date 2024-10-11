@@ -7,6 +7,7 @@ import ViewTopBar from "~/app/_components/Menu/ViewTopBar";
 import TableContainer from "~/app/_components/Container/TableContainer";
 
 import { useSession } from "next-auth/react";
+import TableContainer2 from "~/app/_components/Container/TableContainer2";
 
 
 const BasePage = ({ params }: { params: { baseId: string }}) => {
@@ -15,7 +16,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
 
   // STATES
   const [curTable, setCurTable] = useState<string>("");
-  const scrollRef = useRef<HTMLDivElement>(null);
+  // const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
     <main className={`font-base-sans text-[13px] leading-[1.38] overflow-hidden`}>
@@ -32,13 +33,15 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
         {/* table toolbar */}
         <ViewTopBar className={`relative z-20`} />
 
-        <div ref={scrollRef} className={`relative h-full z-10 overflow-auto`}>
-          <TableContainer
-            ref={scrollRef}
-            tableId={curTable}
-            className={`left-0 top-0 z-20 w-auto overflow-auto`}
-          />
-        </div>
+        <TableContainer2 tableId={curTable} className={`relative`} />
+
+        {/*<div ref={scrollRef} className={`relative h-full z-10 overflow-auto`}>*/}
+        {/*  <TableContainer*/}
+        {/*    ref={scrollRef}*/}
+        {/*    tableId={curTable}*/}
+        {/*    className={`left-0 top-0 z-20 w-auto overflow-auto`}*/}
+        {/*  />*/}
+        {/*</div>*/}
       </div>
     </main>
   );

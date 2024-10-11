@@ -27,4 +27,23 @@ export const fieldRouter = createTRPCRouter({
         }
       })
     }),
+
+  getAllFieldsByTableId: publicProcedure
+    .input(z.object({
+      tableId: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.field.findMany({
+        where: {
+          tableId: input.tableId,
+        },
+        select: {
+          id: true,
+          name: true,
+        },
+        orderBy: {
+          createdAt: "asc"
+        }
+      })
+    })
 });

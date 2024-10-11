@@ -1,0 +1,21 @@
+DO $$
+DECLARE
+    i INT;
+    record_id UUID;
+    field_json JSON;
+BEGIN
+    FOR i IN 1..100 LOOP
+        record_id := gen_random_uuid();
+
+        field_json := json_build_object(
+            'Name', 'Name ' || i,
+            'Role', 'Role ' || i,
+            'Status', CASE WHEN i % 2 = 0 THEN 'Active' ELSE 'Inactive' END,
+            'Age', i + 20,  -- Starting age, adjust as needed
+            'Email', 'user' || i || '@example.com'
+        );
+
+        INSERT INTO "Record" (id, "createdAt", fields, "tableId")
+        VALUES (record_id, now(), field_json, '3d7e3ee8-a5ba-4403-b677-9312c31a4a24');
+    END LOOP;
+END $$;

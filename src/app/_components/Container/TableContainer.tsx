@@ -52,36 +52,36 @@ const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ classN
     }
   )
 
-  const columns = useMemo<ColumnDef<RecordFieldsType>[]>(() =>
-    fields.map(field => ({
-      accessorKey: field,
-      header: field.charAt(0).toUpperCase() + field.slice(1),
-      cell: ({ cell, row }) => {
-        const value = cell.getValue();
-
-        const stringValue = value === null || value === undefined
-          ? undefined
-          : String(value);
-
-        const rowId = typeof row.original.id === 'string'
-          ? row.original.id
-          : String(row.original.id);
-
-        if (rowId === "temp") return;
-
-        return (
-          <EditableCell
-            setIsEditing={setIsEditing}
-            data={stringValue}
-            rowId={rowId}
-            columnKey={field}
-          />
-        );
-      },
-      minSize: 50,
-      maxSize: 500,
-    })), [fields]
-  );
+  // const columns = useMemo<ColumnDef<RecordFieldsType>[]>(() =>
+  //   fields.map(field => ({
+  //     accessorKey: field,
+  //     header: field.charAt(0).toUpperCase() + field.slice(1),
+  //     cell: ({ cell, row }) => {
+  //       const value = cell.getValue();
+  //
+  //       const stringValue = value === null || value === undefined
+  //         ? undefined
+  //         : String(value);
+  //
+  //       const rowId = typeof row.original.id === 'string'
+  //         ? row.original.id
+  //         : String(row.original.id);
+  //
+  //       if (rowId === "temp") return;
+  //
+  //       return (
+  //         <EditableCell
+  //           setIsEditing={setIsEditing}
+  //           data={stringValue}
+  //           rowId={rowId}
+  //           columnKey={field}
+  //         />
+  //       );
+  //     },
+  //     minSize: 50,
+  //     maxSize: 500,
+  //   })), [fields]
+  // );
 
   const handleScroll = useCallback(() => {
     if (ref && 'current' in ref && ref.current) {
@@ -144,33 +144,33 @@ const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ classN
     setData((prevData) => [...prevData, newRecord]);
   };
 
-  const table = useReactTable({
-    columns,
-    data: data,
-    state: {
-      columnSizing,
-    },
-    getCoreRowModel: getCoreRowModel(),
-    enableColumnResizing: true,
-    columnResizeMode: "onChange",
-    onColumnSizingChange: setColumnSizing,
-    getRowId: (originalRow: RecordFieldsType) => originalRow.id as string,
-  })
-
-  const rowVirtualizer = useVirtualizer({
-    count: table.getRowModel().rows.length,
-    estimateSize: () => 32,
-    getScrollElement: () => {
-      if (typeof ref === 'function') {
-        return document.body;
-      }
-      if (!ref!.current) {
-        return document.body;
-      }
-      return parentRef.current;
-    },
-    overscan: 5,
-  });
+  // const table = useReactTable({
+  //   columns,
+  //   data: data,
+  //   state: {
+  //     columnSizing,
+  //   },
+  //   getCoreRowModel: getCoreRowModel(),
+  //   enableColumnResizing: true,
+  //   columnResizeMode: "onChange",
+  //   onColumnSizingChange: setColumnSizing,
+  //   getRowId: (originalRow: RecordFieldsType) => originalRow.id as string,
+  // })
+  //
+  // const rowVirtualizer = useVirtualizer({
+  //   count: table.getRowModel().rows.length,
+  //   estimateSize: () => 32,
+  //   getScrollElement: () => {
+  //     if (typeof ref === 'function') {
+  //       return document.body;
+  //     }
+  //     if (!ref!.current) {
+  //       return document.body;
+  //     }
+  //     return parentRef.current;
+  //   },
+  //   overscan: 5,
+  // });
 
   if (isLoading || !tableId) {
     return (
@@ -189,118 +189,118 @@ const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ classN
 
   return (
     <div ref={parentRef} className="flex  items-start">
-      <table className={`relative cursor-pointer border-r-0 p-0 ${className}`}>
-        <thead className={`relative h-8`}>
-        {table.getHeaderGroups().length > 0 ? (
-          table.getHeaderGroups().map((headerGroup) => (
-            <tr className={`flex h-8`} key={headerGroup.id}>
-              <HeaderWrapper className={`flex h-8 min-w-16 leading-6`}>
-                <Checkbox />
-              </HeaderWrapper>
+      {/*<table className={`relative cursor-pointer border-r-0 p-0 ${className}`}>*/}
+      {/*  <thead className={`relative h-8`}>*/}
+      {/*  {table.getHeaderGroups().length > 0 ? (*/}
+      {/*    table.getHeaderGroups().map((headerGroup) => (*/}
+      {/*      <tr className={`flex h-8`} key={headerGroup.id}>*/}
+      {/*        <HeaderWrapper className={`flex h-8 min-w-16 leading-6`}>*/}
+      {/*          <Checkbox />*/}
+      {/*        </HeaderWrapper>*/}
 
-              {headerGroup.headers.map((header, index) => (
-                <HeaderWrapper
-                  className={`flex h-8 flex-row items-center border-r-[0.8px] font-normal leading-6`}
-                  key={header.id + index}
-                  style={{ width: header.getSize() }}
-                >
-                    <span
-                      className={`relative flex h-full w-[124px] flex-grow items-center`}
-                    >
-                      <p
-                        className={`relative h-auto w-full overflow-clip text-ellipsis whitespace-nowrap pl-2 text-start text-[13px]`}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                      </p>
-                    </span>
+      {/*        {headerGroup.headers.map((header, index) => (*/}
+      {/*          <HeaderWrapper*/}
+      {/*            className={`flex h-8 flex-row items-center border-r-[0.8px] font-normal leading-6`}*/}
+      {/*            key={header.id + index}*/}
+      {/*            style={{ width: header.getSize() }}*/}
+      {/*          >*/}
+      {/*              <span*/}
+      {/*                className={`relative flex h-full w-[124px] flex-grow items-center`}*/}
+      {/*              >*/}
+      {/*                <p*/}
+      {/*                  className={`relative h-auto w-full overflow-clip text-ellipsis whitespace-nowrap pl-2 text-start text-[13px]`}*/}
+      {/*                >*/}
+      {/*                  {header.isPlaceholder*/}
+      {/*                    ? null*/}
+      {/*                    : flexRender(*/}
+      {/*                      header.column.columnDef.header,*/}
+      {/*                      header.getContext(),*/}
+      {/*                    )}*/}
+      {/*                </p>*/}
+      {/*              </span>*/}
 
-                  {/* TODO: drop down arrow menu here */}
-                  <span
-                    // className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}
-                    className={`flex-end relative bottom-0 right-0 top-0 flex h-full items-center pl-1 pr-1.5`}
-                  >
-                      <CellArrowIcon className={`opacity-75`} />
-                    </span>
+      {/*            /!* TODO: drop down arrow menu here *!/*/}
+      {/*            <span*/}
+      {/*              // className={`absolute flex items-center pl-1 pr-1.5 top-0 bottom-0 right-0`}*/}
+      {/*              className={`flex-end relative bottom-0 right-0 top-0 flex h-full items-center pl-1 pr-1.5`}*/}
+      {/*            >*/}
+      {/*                <CellArrowIcon className={`opacity-75`} />*/}
+      {/*              </span>*/}
 
-                  <div
-                    onMouseDown={header.getResizeHandler()}
-                    onTouchStart={header.getResizeHandler()}
-                    className={`absolute bottom-0 right-0 top-0 z-10 w-1 cursor-col-resize ${header.column.getIsResizing() ? "bg-blue-500" : "bg-transparent"} `}
-                  ></div>
-                </HeaderWrapper>
-              ))}
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td
-              colSpan={table.getAllColumns().length}
-              className="py-4 text-center"
-            ></td>
-          </tr>
-        )}
-        </thead>
+      {/*            <div*/}
+      {/*              onMouseDown={header.getResizeHandler()}*/}
+      {/*              onTouchStart={header.getResizeHandler()}*/}
+      {/*              className={`absolute bottom-0 right-0 top-0 z-10 w-1 cursor-col-resize ${header.column.getIsResizing() ? "bg-blue-500" : "bg-transparent"} `}*/}
+      {/*            ></div>*/}
+      {/*          </HeaderWrapper>*/}
+      {/*        ))}*/}
+      {/*      </tr>*/}
+      {/*    ))*/}
+      {/*  ) : (*/}
+      {/*    <tr>*/}
+      {/*      <td*/}
+      {/*        colSpan={table.getAllColumns().length}*/}
+      {/*        className="py-4 text-center"*/}
+      {/*      ></td>*/}
+      {/*    </tr>*/}
+      {/*  )}*/}
+      {/*  </thead>*/}
 
-        <tbody className={``}>
-        {table.getRowModel().rows.length > 0 ? (
-          rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            const row = table.getRowModel().rows[virtualRow.index];
+      {/*  <tbody className={``}>*/}
+      {/*  {table.getRowModel().rows.length > 0 ? (*/}
+      {/*    rowVirtualizer.getVirtualItems().map((virtualRow) => {*/}
+      {/*      const row = table.getRowModel().rows[virtualRow.index];*/}
 
-            if (row) return (<tr
-              className={`relative flex h-8 bg-white hover:bg-[#f8f8f8]`}
-              key={row.id + virtualRow.index}
-            >
-              <td className="min-w-16 border-b-[0.8px] border-r border-r-at-table-bot-gray bg-white pl-2 leading-6">
-                {virtualRow.index + 1}
-              </td>
+      {/*      if (row) return (<tr*/}
+      {/*        className={`relative flex h-8 bg-white hover:bg-[#f8f8f8]`}*/}
+      {/*        key={row.id + virtualRow.index}*/}
+      {/*      >*/}
+      {/*        <td className="min-w-16 border-b-[0.8px] border-r border-r-at-table-bot-gray bg-white pl-2 leading-6">*/}
+      {/*          {virtualRow.index + 1}*/}
+      {/*        </td>*/}
 
-              {row.getVisibleCells().map((cell, index) => (
-                <td
-                  className={`flex border-b-[0.8px] border-r-[0.8px] bg-white focus:border-at-btn-primary`}
-                  key={cell.id + index}
-                  style={{ width: cell.column.getSize() }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>);
-          })
-        ) : (
-          <tr className={`hover:bg-[#f8f8f8]`} />
-        )}
+      {/*        {row.getVisibleCells().map((cell, index) => (*/}
+      {/*          <td*/}
+      {/*            className={`flex border-b-[0.8px] border-r-[0.8px] bg-white focus:border-at-btn-primary`}*/}
+      {/*            key={cell.id + index}*/}
+      {/*            style={{ width: cell.column.getSize() }}*/}
+      {/*          >*/}
+      {/*            {flexRender(cell.column.columnDef.cell, cell.getContext())}*/}
+      {/*          </td>*/}
+      {/*        ))}*/}
+      {/*      </tr>);*/}
+      {/*    })*/}
+      {/*  ) : (*/}
+      {/*    <tr className={`hover:bg-[#f8f8f8]`} />*/}
+      {/*  )}*/}
 
-        <tr
-          className={`relative flex h-8 w-full bg-white hover:bg-[#f8f8f8]`}
-        >
-          <td
-            className={`h-8 w-full border-b-[0.8px] border-r-[0.8px] border-at-table-bot-gray`}
-          >
-            <AddRowCell
-              customFunction={addEmptyRecord}
-              tableId={tableId}
-              className={`absolute left-2 top-2`}
-            />
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      {/*  <tr*/}
+      {/*    className={`relative flex h-8 w-full bg-white hover:bg-[#f8f8f8]`}*/}
+      {/*  >*/}
+      {/*    <td*/}
+      {/*      className={`h-8 w-full border-b-[0.8px] border-r-[0.8px] border-at-table-bot-gray`}*/}
+      {/*    >*/}
+      {/*      <AddRowCell*/}
+      {/*        customFunction={addEmptyRecord}*/}
+      {/*        tableId={tableId}*/}
+      {/*        className={`absolute left-2 top-2`}*/}
+      {/*      />*/}
+      {/*    </td>*/}
+      {/*  </tr>*/}
+      {/*  </tbody>*/}
+      {/*</table>*/}
 
-      <table className={`relative z-50 m-0 border-none p-0`}>
-        <thead className={`relative h-8`}>
-        <tr>
-          <AddColumnCell
-            setFields={setFields}
-            tableId={tableId}
-            className={`flex h-8 min-w-16 justify-center border-r-[0.8px] font-normal leading-6`}
-          />
-        </tr>
-        </thead>
-      </table>
+      {/*<table className={`relative z-50 m-0 border-none p-0`}>*/}
+      {/*  <thead className={`relative h-8`}>*/}
+      {/*  <tr>*/}
+      {/*    <AddColumnCell*/}
+      {/*      setFields={setFields}*/}
+      {/*      tableId={tableId}*/}
+      {/*      className={`flex h-8 min-w-16 justify-center border-r-[0.8px] font-normal leading-6`}*/}
+      {/*    />*/}
+      {/*  </tr>*/}
+      {/*  </thead>*/}
+      {/*</table>*/}
     </div>
   );
 });
