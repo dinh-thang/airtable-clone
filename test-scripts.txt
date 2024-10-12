@@ -11,8 +11,9 @@ BEGIN
             'Name', 'Name ' || i,
             'Role', 'Role ' || i,
             'Status', CASE WHEN i % 2 = 0 THEN 'Active' ELSE 'Inactive' END,
-            'Age', i + 20,  -- Starting age, adjust as needed
-            'Email', 'user' || i || '@example.com'
+            'Age', i + 20,
+            'Email', 'user' || i || '@example.com',
+            'New field 1', ''
         );
 
         INSERT INTO "Record" (id, "createdAt", fields, "tableId")

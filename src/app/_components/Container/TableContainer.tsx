@@ -117,8 +117,6 @@ const TableContainer = forwardRef<HTMLDivElement, TableContainerProps>(({ classN
       )
     );
 
-    console.log(tmpFields);
-
     setFields(tmpFields);
   }
 

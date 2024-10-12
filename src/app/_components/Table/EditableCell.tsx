@@ -2,25 +2,52 @@ import React, { useState } from "react";
 import { type CellProps } from "~/interfaces/interfaces";
 import { api } from "~/trpc/react";
 import cuid from "cuid";
+import { type RecordFieldsType } from "~/app/_components/Container/TableContainer2";
 
-const EditableCell: React.FC<CellProps> = ({ data, columnKey, rowId, setIsEditing }) => {
+const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, setIsEditing }) => {
   const [editingValue, setEditingValue] = useState<string>(data ?? "");
 
   const utils = api.useUtils();
   const { mutate } = api.record.updateRowContent.useMutation({
-    onMutate() {
-      void utils.table.getTableById.cancel();
+    onMutate(updatedRow) {
+      void utils.record.getAllRecordsByTableId.cancel();
+
       const prevData = data;
 
+      utils.record.getAllRecordsByTableId.setInfiniteData(
+        {
+          tableId: tableId!,
+          limit: 50,
+        },
+        (oldRecords) => {
+          if (!oldRecords) return oldRecords;
+
+          return {
+            ...oldRecords,
+            pages: oldRecords.pages.map((page) => ({
+              ...page,
+              records: page.records.map((record) =>
+                record.id === rowId
+                  ? {
+                    ...record,
+                    fields: {
+                      ...((record.fields as RecordFieldsType) || {}),
+                      [updatedRow.fieldKey]: updatedRow.fieldValue,
+                    },
+                  }
+                  : record
+              ),
+            })),
+          };
+        }
+      );
       return { prevData };
     },
     onError(err, newPost, ctx) {
-      if (ctx?.prevData) {
-        setEditingValue(ctx.prevData);
-      }
+      return "temp error";
     },
     onSettled() {
-      void utils.table.getTableById.invalidate();
+      void utils.record.getAllRecordsByTableId.invalidate();
     },
   });
 

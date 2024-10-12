@@ -91,6 +91,7 @@ model Table {
 
 model Record {
   id        String   @id @default(cuid())
+  index     Int      @default(autoincrement())
   createdAt DateTime @default(now())
   fields    Json
 

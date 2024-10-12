@@ -83,7 +83,7 @@ export const recordRouter = createTRPCRouter({
         },
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
-          createdAt: "asc",
+          index: "asc",
         }
       })
 

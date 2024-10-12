@@ -8,32 +8,35 @@ import NewFieldInputField from "~/app/_components/InputField/NewFieldInputField"
 import SearchIcon from "~/app/_components/Icon/Main/SearchIcon";
 import SecondaryBtn from "~/app/_components/Btn/SecondaryBtn";
 import PrimaryBtn from "~/app/_components/Btn/PrimaryBtn";
+import cuid from "cuid";
 
-const AddColumnCell: React.FC<TableHeaderProps> = ({ className, setFields, tableId }) => {
+const AddColumnCell: React.FC<TableHeaderProps> = ({ className, tableId }) => {
   const utils = api.useUtils();
+
   const { mutate } = api.field.createField.useMutation({
     onMutate(newField) {
-      void utils.table.getTableById.cancel();
+      void utils.field.getAllFieldsByTableId.cancel();
 
       // Get the data from the queryCache
-      const prevData = utils.table.getTableById.getData();
+      const prevData = utils.field.getAllFieldsByTableId.getData();
 
       // Optimistically update the data with our new post
-      if (setFields) {
-        setFields(prevState => [...prevState, newField.name]);
-      }
+      utils.field.getAllFieldsByTableId.setData(
+        {tableId: tableId!},
+        (oldFields) => [...oldFields ?? [], { name: newField.name, id: cuid() }],
+      );
 
       // Return the previous data so we can revert if something goes wrong
       return { prevData };
     },
     onError(err, newField, ctx) {
       if (ctx?.prevData) {
-        utils.table.getTableById.setData({ id: tableId! }, ctx.prevData);
+        utils.field.getAllFieldsByTableId.setData({ tableId: tableId! }, ctx.prevData);
       }
     },
     onSettled() {
       // Sync with server once mutation has settled
-      void utils.table.getTableById.invalidate();
+      void utils.field.getAllFieldsByTableId.invalidate();
     },
   });
 

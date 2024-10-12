@@ -67,6 +67,7 @@ export interface Field {
 
 export interface CellProps extends BaseComponentProps {
   data?: string;
+  tableId?: string;
   setData?: Dispatch<SetStateAction<string>>;
   rowId: string;
   columnKey: string;

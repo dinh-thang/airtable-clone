@@ -11,7 +11,7 @@ import CellArrowIcon from "~/app/_components/Icon/Base/CellArrowIcon";
 import AddRowCell from "~/app/_components/Table/AddRowCell";
 import AddColumnCell from "~/app/_components/Table/AddColumnCell";
 
-type RecordFieldsType = Record<string, string | number | boolean | null>;
+export type RecordFieldsType = Record<string, string | number | boolean | null>;
 
 const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) => {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
@@ -20,8 +20,6 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
   const [page, setPage] = React.useState(0);
   // if a cell is being edited then true
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // rendered fields for optimistic
-  const [fields, setFields] = useState<string[]>([]);
   // for resizing
   const [columnSizing, setColumnSizing] = useState({});
 
@@ -109,6 +107,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
     })), [handleFieldsUpdate]
   );
 
+
   const table = useReactTable({
     columns,
     data: tableData,
@@ -141,7 +140,10 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
       const observer = new IntersectionObserver(
         (entries) => {
           const entry = entries[0];
-          if (entry && entry.isIntersecting) {
+
+          if (!entry) return;
+
+          if (entry.isIntersecting) {
             handleFetchNextPage();
           }
         },
@@ -178,8 +180,8 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
   }
 
   return (
-    <div ref={scrollContainerRef} className={`relative overflow-auto h-screen ${className}`}>
-      <table className={` cursor-pointer border-r-0 p-0`}>
+    <div ref={scrollContainerRef} className={`relative flex flex-row overflow-auto h-screen ${className}`}>
+      <table className={`cursor-pointer border-r-0 p-0`}>
         <thead className={`h-8`}>
         {table.getHeaderGroups().length > 0 ? (
           table.getHeaderGroups().map((headerGroup) => (
@@ -283,24 +285,25 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
             <td
               className={`h-8 w-full border-b-[0.8px] border-r-[0.8px] border-at-table-bot-gray`}
             >
-              {/*<AddRowCell*/}
-              {/*  customFunction={addEmptyRecord}*/}
-              {/*  tableId={tableId}*/}
-              {/*  className={`absolute left-2 top-2`}*/}
-              {/*/>*/}
+              <AddRowCell
+                // customFunction={addEmptyRecord}
+                tableId={tableId}
+                fields={handleFieldsUpdate}
+                className={`absolute left-2 top-2`}
+              />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <table className={`relative z-50 m-0 border-none p-0`}>
+      <table className={`relative right-0 z-10 m-0 border-none p-0`}>
         <thead className={`relative h-8`}>
         <tr>
-          {/*<AddColumnCell*/}
-          {/*  setFields={setFields}*/}
-          {/*  tableId={tableId}*/}
-          {/*  className={`flex h-8 min-w-16 justify-center border-r-[0.8px] font-normal leading-6`}*/}
-          {/*/>*/}
+          <AddColumnCell
+            // setFields={setFields}
+            tableId={tableId}
+            className={`flex h-8 min-w-16 justify-center border-r-[0.8px] font-normal leading-6`}
+          />
         </tr>
         </thead>
       </table>
