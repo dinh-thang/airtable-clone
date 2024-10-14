@@ -12,7 +12,7 @@ import { type BaseComponentProps } from "~/interfaces/interfaces";
 import { useSession } from "next-auth/react";
 
 const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
-  const { data } = useSession();
+  const { data, status } = useSession();
 
   const [searchVal, setSearchVal] = useState("");
   const [profileSelected, setProfileSelected] = useState<boolean>(false);
@@ -60,15 +60,18 @@ const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
             </div>
           </div>
 
+
           {/* profile img */}
-          <div onClick={() => setProfileSelected(!profileSelected)} className={`h-7 relative flex items-center ml-2 justify-center`}>
-            {/*eslint-disable-next-line @next/next/no-img-element*/}
-            <img className={`cursor-pointer rounded-full w-7 h-7`} src={image} alt={``}/>
+          <div onClick={() => { console.log(profileSelected); setProfileSelected(!profileSelected)}} className={`h-7 relative flex items-center ml-2 justify-center`}>
+            {status !== "loading" && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className={`cursor-pointer rounded-full h-7 w-7`} src={image} alt={``}/>
+            )}
           </div>
 
           {profileSelected ?? (
             <div className={`fixed top-full left-0 bg-blue-500`}>
-              opend
+              opened
             </div>
           )}
         </div>

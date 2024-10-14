@@ -11,13 +11,15 @@ import QuestionMarkIcon from "~/app/_components/Icon/QuestionMarkIcon";
 import NotificationIcon from "~/app/_components/Icon/NotificationIcon";
 import { api } from "~/trpc/react";
 import { useIsFetching } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import RevertIcon from "~/app/_components/Icon/RevertIcon";
 
 export interface BaseTopBarProps extends BaseComponentProps {
-  userImage: string;
   baseId: string;
 }
 
-const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, userImage, baseId }) => {
+const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, baseId }) => {
+  const { data, status } = useSession();
   const { data: base, isLoading } = api.base.getBaseById.useQuery(
     { id: baseId },
     { enabled: !!baseId }
@@ -60,11 +62,16 @@ const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, userImage, baseId })
             <div />
           )}
 
+          {/* revert icon */}
+          <div className={`flex h-7 cursor-pointer flex-row items-center rounded-full px-3 text-black/65 hover:bg-black/10`}>
+            <RevertIcon/>
+          </div>
+
           <div
             className={`flex h-7 cursor-pointer flex-row items-center rounded-full px-3 text-black/65 hover:bg-black/10`}
           >
             <QuestionMarkIcon />
-            <span className={`ml-1 text-[13px]`}>Help</span>
+            <span className={`ml-1 text-white text-[13px]`}>Help</span>
           </div>
 
           <div
@@ -79,12 +86,14 @@ const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, userImage, baseId })
 
           {/* profile img */}
           <div className={`ml-2 flex h-7 items-center justify-center`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className={`h-7 w-7 cursor-pointer rounded-full border-[0.8px] border-white`}
-              src={userImage}
-              alt={``}
-            />
+            {status !== "loading" && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                className={`h-7 w-7 cursor-pointer rounded-full border-[0.8px] border-white`}
+                src={data?.user?.image ?? ""}
+                alt={``}
+              />
+            )}
           </div>
         </div>
       </div>

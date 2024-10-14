@@ -69,7 +69,7 @@ const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, se
 
   return (
     <input
-      className={`w-full outline-none`}
+      className={`w-full text-ellipsis p-1.5 outline-none caret-transparent focus:shadow-at-focus-cell focus:z-50 focus:rounded-sm`}
       id={cuid()}
       value={editingValue}
       onFocus={handleFocus}

@@ -29,21 +29,21 @@ const BaseNavBar: React.FC<BaseComponentProps> = ({ className }) => {
       <div className={`flex flex-row h-auto`}>
         {/* TODO: style the links */}
         {navs.map((nav, i) => (
-          <div className={`px-3 mr-2`} key={i}>
+          <div className={`flex h-7 cursor-pointer flex-row items-center rounded-full px-3 text-black/65 hover:bg-black/10 mr-2`} key={i}>
             <Link href={nav.link} className={`flex items-center`}>
-              <p className={`text-[13px] text-black/65`}>{nav.name}</p>
+              <p className={`text-[13px] text-white`}>{nav.name}</p>
             </Link>
           </div>
         ))}
       </div>
 
-      <div className={`border-l-[0.8px] border-black/10 h-5 mr-3`} />
+      <div className={`border-l-[0.8px] border-white/10 h-5 mr-3`} />
 
       <div>
         {navs2.map((nav, i) => (
-          <div className={`px-3 mr-2`} key={i}>
+          <div className={`mr-2 flex h-7 cursor-pointer flex-row items-center rounded-full px-3 text-black/65 hover:bg-black/10`} key={i}>
             <Link href={nav.link} className={`flex items-center`}>
-              <p className={`text-[13px] text-black/65`}>{nav.name}</p>
+              <p className={`text-[13px] text-white`}>{nav.name}</p>
             </Link>
           </div>
         ))}

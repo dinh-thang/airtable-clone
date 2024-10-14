@@ -61,10 +61,6 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
     return rawFields.map((field) => field.name);
   }, [rawFields]);
 
-  const handleUpdateData = () => {
-    // update and re fetch data everytime updated
-  }
-
   const tableData: RecordFieldsType[] = useMemo(() => {
     if (!rawData) return [];
 
@@ -166,7 +162,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
 
   if (isLoading || !tableId || handleFieldsUpdate.length === 0) {
     return (
-      <div className={`fixed flex h-full w-full items-center justify-center`}>
+      <div className={`fixed mt-20 flex h-full w-full items-center justify-center z-0`}>
         <div
           className="text-surface inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-at-btn-primary"
           role="status"
@@ -180,9 +176,9 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
   }
 
   return (
-    <div ref={scrollContainerRef} className={`relative flex flex-row overflow-auto h-screen ${className}`}>
-      <table className={`cursor-pointer border-r-0 p-0`}>
-        <thead className={`h-8`}>
+    <div ref={scrollContainerRef} className={`relative flex flex-row bg-[#f8f8f8] overflow-auto h-screen ${className}`}>
+      <table className={`relative top-0 cursor-pointer border-r-0 p-0`}>
+        <thead className={`z-10 h-8`}>
         {table.getHeaderGroups().length > 0 ? (
           table.getHeaderGroups().map((headerGroup) => (
             <tr className={`flex h-8`} key={headerGroup.id}>
@@ -236,7 +232,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
         )}
         </thead>
 
-        <tbody className={`relative`} style={{
+        <tbody className={`relative z-0`} style={{
           height: `${rowVirtualizer.getTotalSize()}px + 32px`,
         }}>
           {table.getRowModel().rows.length > 0 ? (
@@ -247,7 +243,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
                 <tr
                   data-index={virtualRow.index}
                   ref={node => rowVirtualizer.measureElement(node)}
-                  className={`absolute flex h-8 bg-white hover:bg-[#f8f8f8]`}
+                  className={`absolute flex h-8 z-0 bg-white hover:bg-[#f8f8f8]`}
                   key={row.id}
                   style={{
                     top: `${virtualRow.start}px`,
@@ -296,14 +292,15 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
         </tbody>
       </table>
 
-      <table className={`relative right-0 z-10 m-0 border-none p-0`}>
+      <table className={`relative w-full right-0 z-10 m-0 border-none p-0`}>
         <thead className={`relative h-8`}>
-        <tr>
+        <tr className={`flex flex-row`}>
           <AddColumnCell
             // setFields={setFields}
             tableId={tableId}
             className={`flex h-8 min-w-16 justify-center border-r-[0.8px] font-normal leading-6`}
           />
+          <th className={`relative border-b border-b-at-table-bot-gray bg-[#FBFBFB] w-full h-8`}/>
         </tr>
         </thead>
       </table>

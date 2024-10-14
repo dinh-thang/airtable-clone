@@ -187,7 +187,6 @@ const AddColumnCell: React.FC<TableHeaderProps> = ({ className, tableId }) => {
             </PrimaryBtn>
           </div>
         </div>
-
       )}
     </HeaderWrapper>
   );

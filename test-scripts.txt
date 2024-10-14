@@ -4,7 +4,7 @@ DECLARE
     record_id UUID;
     field_json JSON;
 BEGIN
-    FOR i IN 1..100 LOOP
+    FOR i IN 1..5000 LOOP
         record_id := gen_random_uuid();
 
         field_json := json_build_object(
@@ -13,7 +13,9 @@ BEGIN
             'Status', CASE WHEN i % 2 = 0 THEN 'Active' ELSE 'Inactive' END,
             'Age', i + 20,
             'Email', 'user' || i || '@example.com',
-            'New field 1', ''
+            'New field 1', '',
+            'New field 2', '',
+            'Beautiful field', ''
         );
 
         INSERT INTO "Record" (id, "createdAt", fields, "tableId")
