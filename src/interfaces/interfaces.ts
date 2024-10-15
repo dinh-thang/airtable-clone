@@ -40,11 +40,7 @@ export interface TableContainerProps extends BaseComponentProps {
   tableId?: string;
   curTable?: string;
   setCurTable?: Dispatch<SetStateAction<string>>;
-}
-
-export interface Table {
-  id: string;
-  name: string;
+  setTotalRows?: Dispatch<SetStateAction<string>>;
 }
 
 export interface TableHeaderProps extends BaseComponentProps {

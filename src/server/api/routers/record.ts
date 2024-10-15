@@ -67,6 +67,18 @@ export const recordRouter = createTRPCRouter({
       });
     }),
 
+  getTotalRowsByTableId: publicProcedure
+    .input(z.object({
+      tableId: z.string(),
+    }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.record.count({
+        where: {
+          tableId: input.tableId
+        }
+      })
+    }),
+
   getAllRecordsByTableId: publicProcedure
     .input(z.object({
       tableId: z.string(),
@@ -96,7 +108,7 @@ export const recordRouter = createTRPCRouter({
 
       return {
         records,
-        nextCursor,
+        nextCursor
       }
     })
 })

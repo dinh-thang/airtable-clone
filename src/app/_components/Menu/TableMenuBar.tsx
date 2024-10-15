@@ -90,21 +90,6 @@ const TableMenuBar: React.FC<TableContainerProps> = ({ className, baseId, setCur
       <div className={`flex h-8 flex-row bg-black/10 pl-2`}>
         {fetchedTables.tables.map((table, index) => (
           <TableMenuTab key={index} curTable={curTable!} name={table.name} id={table.id} setTab={setCurTable!}/>
-
-          // <div key={index} className={`flex flex-row items-center`}>
-          //   <div
-          //     className={`flex h-full items-center rounded-t-[4px] px-3 hover:bg-black/10`}
-          //   >
-          //     <span
-          //       className={`cursor-pointer`}
-          //       onClick={() => switchTable(table.id)}
-          //     >
-          //       {table.name}
-          //     </span>
-          //   </div>
-          //
-          //   <div className={`h-4 w-[1px] bg-black/30`} />
-          // </div>
         ))}
 
         {/* cell to add table */}

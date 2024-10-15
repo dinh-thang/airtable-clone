@@ -25,7 +25,7 @@ const BasePage = ({ params }: { params: { baseId: string }}) => {
         <TableMenuBar setCurTable={setCurTable} curTable={curTable} className={`relative text-white`} baseId={baseId} />
 
         {/* table toolbar */}
-        <ViewTopBar className={`relative z-20`} />
+        <ViewTopBar tableId={curTable} className={`relative z-20`} />
 
         <TableContainer2 tableId={curTable} className={`relative`} />
       </div>
