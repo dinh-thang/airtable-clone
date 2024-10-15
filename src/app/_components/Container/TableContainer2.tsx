@@ -37,7 +37,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
     isLoading
   } = api.record.getAllRecordsByTableId.useInfiniteQuery(
     {
-      limit: 50,
+      limit: 100,
       tableId: tableId!
     },
     {
