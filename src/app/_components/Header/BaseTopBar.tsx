@@ -60,7 +60,7 @@ const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, baseId }) => {
             <div
               className={`mx-3 flex h-7 animate-pulse items-center rounded-full bg-black/10 px-3`}
             >
-              <span className={`text-[13px] text-at-half-black`}>
+              <span className={`text-[13px] text-white`}>
                 Loading...
               </span>
             </div>

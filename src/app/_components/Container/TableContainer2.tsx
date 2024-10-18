@@ -37,7 +37,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
     isLoading
   } = api.record.getAllRecordsByTableId.useInfiniteQuery(
     {
-      limit: 100,
+      limit: 200,
       tableId: tableId!
     },
     {
@@ -129,35 +129,20 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
     overscan: 5,
   });
 
+  const fetchMoreOnBottomReached = React.useCallback(
+    (containerRefElement?: HTMLDivElement | null) => {
+      if (containerRefElement) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement
+        if (scrollHeight - scrollTop - clientHeight < 700) {
+          handleFetchNextPage();
+        }
+      }
+    },
+    [handleFetchNextPage]
+  )
+
   useEffect(() => {
-    const currentObserverRef = observerRef.current;
-
-    if (currentObserverRef) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-
-          if (!entry) return;
-
-          if (entry.isIntersecting) {
-            handleFetchNextPage();
-          }
-        },
-        {
-          root: null,
-          rootMargin: '0px 0px 300px 0px',
-          threshold: 1.0,
-        }
-      );
-
-      observer.observe(currentObserverRef);
-
-      return () => {
-        if (currentObserverRef) {
-          observer.unobserve(currentObserverRef);
-        }
-      };
-    }
+    fetchMoreOnBottomReached(scrollContainerRef.current);
   }, [handleFetchNextPage]);
 
   if (isLoading || !tableId || handleFieldsUpdate.length === 0) {
@@ -176,7 +161,11 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
   }
 
   return (
-    <div ref={scrollContainerRef} className={`relative flex flex-row bg-[#f8f8f8] overflow-auto h-screen ${className}`}>
+    <div
+      ref={scrollContainerRef}
+      className={`relative flex flex-row bg-[#f8f8f8] overflow-auto h-screen ${className}`}
+      onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
+    >
       <table className={`relative top-0 cursor-pointer border-r-0 p-0`}>
         <thead className={`z-10 h-8`}>
         {table.getHeaderGroups().length > 0 ? (

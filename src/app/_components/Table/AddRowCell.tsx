@@ -6,11 +6,11 @@ import { type TableHeaderProps } from "~/interfaces/interfaces";
 import cuid from "cuid";
 import { type RecordFieldsType } from "~/app/_components/Container/TableContainer2";
 
-const AddRowCell: React.FC<TableHeaderProps> = ({tableId, fields, className, customFunction}) => {
+const AddRowCell: React.FC<TableHeaderProps> = ({tableId, fields, className}) => {
   const utils = api.useUtils();
   const { mutate } = api.record.addNewEmptyRecord.useMutation({
     onMutate() {
-      void utils.table.getTableById.cancel();
+      void utils.record.getAllRecordsByTableId.cancel();
 
       // Get the data from the queryCache
       const prevData = utils.record.getAllRecordsByTableId.getInfiniteData();
@@ -19,7 +19,7 @@ const AddRowCell: React.FC<TableHeaderProps> = ({tableId, fields, className, cus
       utils.record.getAllRecordsByTableId.setInfiniteData(
         {
           tableId: tableId!,
-          limit: 50,
+          limit: 200,
         },
         (oldRecords) => {
           if (!oldRecords) return oldRecords;
@@ -58,7 +58,7 @@ const AddRowCell: React.FC<TableHeaderProps> = ({tableId, fields, className, cus
         utils.record.getAllRecordsByTableId.setInfiniteData(
           {
             tableId: tableId!,
-            limit: 50,
+            limit: 200,
           },
           ctx.prevData);
       }

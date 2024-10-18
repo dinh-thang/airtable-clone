@@ -17,7 +17,7 @@ const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, se
       utils.record.getAllRecordsByTableId.setInfiniteData(
         {
           tableId: tableId!,
-          limit: 50,
+          limit: 200,
         },
         (oldRecords) => {
           if (!oldRecords) return oldRecords;

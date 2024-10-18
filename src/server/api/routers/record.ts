@@ -82,7 +82,7 @@ export const recordRouter = createTRPCRouter({
   getAllRecordsByTableId: publicProcedure
     .input(z.object({
       tableId: z.string(),
-      limit: z.number().min(1).max(100),
+      limit: z.number().min(1).max(200),
       cursor: z.string().nullish(),
     }))
     .query(async ({ ctx, input }) => {
