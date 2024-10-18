@@ -11,15 +11,18 @@ import QuestionMarkIcon from "~/app/_components/Icon/QuestionMarkIcon";
 import NotificationIcon from "~/app/_components/Icon/NotificationIcon";
 import { api } from "~/trpc/react";
 import { useIsFetching } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import RevertIcon from "~/app/_components/Icon/RevertIcon";
+import ProfileIconBtn from "~/app/_components/Btn/ProfileIconBtn";
+import { useRouter } from "next/navigation";
+import { pageRoutes } from "~/constants/pageRoutes";
+import BackArrowIcon from "~/app/_components/Icon/Base/BackArrowIcon";
 
 export interface BaseTopBarProps extends BaseComponentProps {
   baseId: string;
 }
 
 const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, baseId }) => {
-  const { data, status } = useSession();
+  const router = useRouter();
   const { data: base, isLoading } = api.base.getBaseById.useQuery(
     { id: baseId },
     { enabled: !!baseId }
@@ -32,7 +35,10 @@ const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, baseId }) => {
     >
       <div className={`flex flex-1`}>
         <div className={`flex h-full flex-row items-center`}>
-          <RocketIcon className="mr-4" />
+          <div onClick={() => router.push(pageRoutes.MAIN)} className={`hover:bg-white w-6 h-6 mr-4 rounded-full cursor-pointer`}>
+            <RocketIcon className={`hover:opacity-0`} />
+          </div>
+          <BackArrowIcon/>
 
           {isLoading ? (
             <span className={`mr-1 h-4 w-14 bg-black/10 rounded-full animate-pulse`} />
@@ -85,16 +91,7 @@ const BaseTopBar: React.FC<BaseTopBarProps> = ({ className, baseId }) => {
           </div>
 
           {/* profile img */}
-          <div className={`ml-2 flex h-7 items-center justify-center`}>
-            {status !== "loading" && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                className={`h-7 w-7 cursor-pointer rounded-full border-[0.8px] border-white`}
-                src={data?.user?.image ?? ""}
-                alt={``}
-              />
-            )}
-          </div>
+          <ProfileIconBtn className={`ml-2 flex h-7 items-center justify-center`}/>
         </div>
       </div>
     </header>

@@ -145,7 +145,7 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
         },
         {
           root: null,
-          rootMargin: '300px',
+          rootMargin: '0px 0px 300px 0px',
           threshold: 1.0,
         }
       );

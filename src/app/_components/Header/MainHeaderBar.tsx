@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MainHamMenu from "~/app/_components/Icon/Main/MainHamMenu";
 import AirTableMainLogo from "~/app/_components/Icon/Main/AirTableMainLogo";
 import Link from "next/link";
@@ -9,22 +9,11 @@ import SearchBox from "~/app/_components/Form/SearchBox";
 import QuestionMarkIcon from "~/app/_components/Icon/QuestionMarkIcon";
 import NotificationIcon from "~/app/_components/Icon/NotificationIcon";
 import { type BaseComponentProps } from "~/interfaces/interfaces";
-import { useSession } from "next-auth/react";
+import ProfileIconBtn from "~/app/_components/Btn/ProfileIconBtn";
 
 const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
-  const { data, status } = useSession();
-
   const [searchVal, setSearchVal] = useState("");
   const [profileSelected, setProfileSelected] = useState<boolean>(false);
-  const [image, setImage] = useState<string>("");
-
-  useEffect(() => {
-    if (!data) return;
-    if (!data.user) return;
-    if (!data.user.image) return;
-
-    setImage(data.user.image);
-  }, [data]);
 
   return (
     <header className={`flex w-full items-center shadow-at-main-nav h-14 bg-white ${className}`}>
@@ -62,12 +51,10 @@ const MainHeaderBar: React.FC<BaseComponentProps> = ({ className }) => {
 
 
           {/* profile img */}
-          <div onClick={() => { console.log(profileSelected); setProfileSelected(!profileSelected)}} className={`h-7 relative flex items-center ml-2 justify-center`}>
-            {status !== "loading" && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className={`cursor-pointer rounded-full h-7 w-7`} src={image} alt={``}/>
-            )}
-          </div>
+          <ProfileIconBtn
+            onClick={() => { setProfileSelected(!profileSelected)}}
+            className={`h-7 relative flex items-center ml-2 justify-center`}
+          />
 
           {profileSelected ?? (
             <div className={`fixed top-full left-0 bg-blue-500`}>
