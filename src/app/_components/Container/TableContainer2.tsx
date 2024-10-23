@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { type TableContainerProps } from "~/interfaces/interfaces";
 import { api } from "~/trpc/react";
 import { type ColumnDef, getCoreRowModel } from "@tanstack/table-core";
-import EditableCell from "~/app/_components/Table/EditableCell";
 import { flexRender, useReactTable } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
+
+import { type TableContainerProps } from "~/interfaces/interfaces";
+import EditableCell from "~/app/_components/Table/EditableCell";
 import HeaderWrapper from "~/app/_components/Table/HeaderWrapper";
 import Checkbox from "~/app/_components/Form/Checkbox";
 import CellArrowIcon from "~/app/_components/Icon/Base/CellArrowIcon";
@@ -20,6 +21,11 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
   const [page, setPage] = React.useState(0);
   // if a cell is being edited then true
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  // the cell id will be rowid+columnkey
+  const [focusedInput, setFocusedInput] = useState<string>("");
+  const [editingValue, setEditingValue] = useState<string>("");
+
   // for resizing
   const [columnSizing, setColumnSizing] = useState({});
 
@@ -95,6 +101,8 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
             data={stringValue}
             rowId={rowId}
             columnKey={field}
+            tableId={tableId}
+            focusedInput={focusedInput}
           />
         );
       },
@@ -142,8 +150,9 @@ const TableContainer2: React.FC<TableContainerProps> = ({ className, tableId }) 
   )
 
   useEffect(() => {
-    fetchMoreOnBottomReached(scrollContainerRef.current);
-  }, [handleFetchNextPage]);
+    console.log(focusedInput);
+    // fetchMoreOnBottomReached(scrollContainerRef.current);
+  }, []);
 
   if (isLoading || !tableId || handleFieldsUpdate.length === 0) {
     return (

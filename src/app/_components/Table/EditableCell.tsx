@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { type CellProps } from "~/interfaces/interfaces";
 import { api } from "~/trpc/react";
 import cuid from "cuid";
 import { type RecordFieldsType } from "~/app/_components/Container/TableContainer2";
 
-const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, setIsEditing }) => {
+const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, setIsEditing, focusedInput }) => {
   const [editingValue, setEditingValue] = useState<string>(data ?? "");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const utils = api.useUtils();
   const { mutate } = api.record.updateRowContent.useMutation({
@@ -44,6 +45,8 @@ const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, se
       return { prevData };
     },
     onError(err, newPost, ctx) {
+      // TODO: handle revert here
+
       return "temp error";
     },
     onSettled() {
@@ -57,8 +60,9 @@ const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, se
 
   const handleSave = async () => {
     setIsEditing!(false);
-
+    
     if (editingValue !== data && rowId) {
+      console.log("edited");
       mutate({
         rowId: rowId,
         fieldKey: columnKey,
@@ -67,9 +71,21 @@ const EditableCell: React.FC<CellProps> = ({ data, tableId, columnKey, rowId, se
     }
   };
 
+  useEffect(() => {
+    if (
+      focusedInput &&
+      focusedInput === rowId + columnKey &&
+      inputRef.current
+    ) {
+      inputRef.current.focus();
+    }
+  }, [focusedInput]);
+
+
   return (
     <input
-      className={`w-full text-ellipsis p-1.5 outline-none caret-transparent focus:shadow-at-focus-cell focus:z-50 focus:rounded-sm`}
+      ref={inputRef}
+      className={`w-full text-ellipsis p-1.5 outline-none focus:shadow-at-focus-cell focus:z-50 focus:rounded-sm`}
       id={cuid()}
       value={editingValue}
       onFocus={handleFocus}

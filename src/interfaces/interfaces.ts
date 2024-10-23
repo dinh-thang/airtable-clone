@@ -70,6 +70,7 @@ export interface CellProps extends BaseComponentProps {
   currentData?: Field;
   setIsEditing?: Dispatch<SetStateAction<boolean>>;
   isReady?: boolean;
+  focusedInput: string;
 }
 
 

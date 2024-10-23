@@ -14,8 +14,6 @@ import BaseFilterMenu from "~/app/_components/Menu/BaseFilterMenu";
 import Link from "next/link";
 import BaseListContainer from "~/app/_components/Container/BaseListContainer";
 
-//  TODO: add a type for workspace here and continue
-
 const MainPage = () => {
   const [currentWSpace, setCurrentWSpace] = useState<string>("123e4567-e89b-12d3-a456-426614174000");
 
@@ -39,7 +37,7 @@ const MainPage = () => {
               className={`mb-6 grid w-full grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4`}
             >
               <Link href={``}>
-                <MainPageCard>
+                <MainPageCard className="h-full">
                   <div className={`flex flex-row`}>
                     <div className={`flex items-center justify-center`}>
                       <MainStarIcon />
@@ -50,7 +48,7 @@ const MainPage = () => {
                       Start with AI
                     </h2>
                   </div>
-                  <p>
+                  <p className="mt-1">
                     Turn your process into an app with data and interfaces using
                     AI.
                   </p>
@@ -58,25 +56,27 @@ const MainPage = () => {
               </Link>
 
               <Link href={``}>
-                <MainPageCard>
+                <MainPageCard className="h-full">
                   <div className={`flex flex-row`}>
                     <div className={`flex items-center justify-center`}>
                       <MainWindowIcon />
                     </div>
+
                     <h2
                       className={`ml-2 text-[15px] font-semibold text-at-half-black`}
                     >
                       Start with templates
                     </h2>
                   </div>
-                  <p>
+
+                  <p className="mt-1">
                     Select a template to get started and customize as you go.
                   </p>
                 </MainPageCard>
               </Link>
 
               <Link href={``}>
-                <MainPageCard>
+                <MainPageCard className="h-full">
                   <div className={`flex flex-row`}>
                     <div className={`flex items-center justify-center`}>
                       <MainArrowIcon />
@@ -87,14 +87,14 @@ const MainPage = () => {
                       Quickly upload
                     </h2>
                   </div>
-                  <p>
+                  <p className="mt-1">
                     Easily migrate your existing projects in just a few minutes.
                   </p>
                 </MainPageCard>
               </Link>
 
               <Link href={``}>
-                <MainPageCard>
+                <MainPageCard className="h-full">
                   <div className={`flex flex-row`}>
                     <div className={`flex items-center justify-center`}>
                       <MainComplexWindowIcon />
@@ -105,7 +105,7 @@ const MainPage = () => {
                       Start from scratch
                     </h2>
                   </div>
-                  <p>
+                  <p className="mt-1">
                     Create a new blank base with custom tables, fields, and
                     views.
                   </p>

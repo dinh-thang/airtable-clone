@@ -15,7 +15,7 @@ const BaseListContainer: React.FC<BaseListContainerProps> = ({ workspaceId, clas
   if (!baseList) return;
 
   return (
-    <div className={`h-full w-full grid grid-cols-4 gap-4 grid-auto-flow-col ${className}`}>
+    <div className={` w-full grid grid-cols-4 gap-4 grid-auto-flow-col ${className}`}>
       {baseList.map((base) => (
         <Link key={base.id} href={pageRoutes.BASE + "/" + base.id}>
           <MainPageCard className={`h-24 mt-1`}>
